@@ -6,7 +6,6 @@ const getRandomInteger = (a = 0, b = 1) => {
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
-
 const generateEventType = () => {
   const eventTypes = [
     'taxi',
@@ -24,7 +23,6 @@ const generateEventType = () => {
 
   return eventTypes[randomIndex];
 };
-
 const generateLocation = () => {
   const cities = [
     'Budapest',
@@ -40,7 +38,6 @@ const generateLocation = () => {
 
   return cities[randomIndex];
 };
-
 const generateBeginEndDates = () => {
   const maxGap = 10;
   const startDate = dayjs()
@@ -58,7 +55,6 @@ const generateBeginEndDates = () => {
     end: endDate.toDate()
   };
 };
-
 const countDuration = (start, end) => {
   const interval = new Date(end - start);
   console.log({
@@ -73,7 +69,6 @@ const countDuration = (start, end) => {
   };
 
 }
-
 const generateDescription = () => {
   const description = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
@@ -90,9 +85,14 @@ const generateDescription = () => {
 
   return description[randomIndex];
 };
-
+const generatePhotos = () => {
+  const resultPhotosArray = [];
+  for (let i = 0; i < 5; i++) {
+    resultPhotosArray[i] = 'http://picsum.photos/248/152?' + getRandomInteger(0, 99).toString();
+  }
+  return resultPhotosArray;
+};
 const generateCost = () => getRandomInteger(1, 100) * 10;
-
 const generateOffers = () => {
   const offers = [
     {
@@ -162,6 +162,7 @@ export const generateTripEvent = () => {
     endDate: dates.end,
     duration: countDuration(dates.start, dates.end),
     description: generateDescription(),
+    photos: generatePhotos(),
     cost: generateCost(),
     offers: generateOffers(),
     isFavorite: Boolean(getRandomInteger(0,1)),
