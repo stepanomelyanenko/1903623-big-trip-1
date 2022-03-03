@@ -39,7 +39,7 @@ const generateLocation = () => {
   return cities[randomIndex];
 };
 const generateBeginEndDates = () => {
-  const maxGap = 10;
+  const maxGap = 14;
   const startDate = dayjs()
     .add(getRandomInteger(-maxGap, maxGap), 'day')
     .add(getRandomInteger(-maxGap, maxGap), 'hour')
@@ -49,7 +49,7 @@ const generateBeginEndDates = () => {
     .add(getRandomInteger(0, 14), 'day')
     .add(getRandomInteger(0, 59), 'hour')
     .add(getRandomInteger(0, 59), 'minute');
-
+  //console.log(startDate.toDate(), endDate.toDate());
   return {
     start: startDate.toDate(),
     end: endDate.toDate()
@@ -57,18 +57,20 @@ const generateBeginEndDates = () => {
 };
 const countDuration = (start, end) => {
   const interval = new Date(end - start);
+  /*
   console.log({
     days: interval.getUTCDate() - 1,
     hours: interval.getUTCHours(),
     minutes: interval.getUTCMinutes(),
   });
+  */
   return {
     days: interval.getUTCDate() - 1,
     hours: interval.getUTCHours(),
     minutes: interval.getUTCMinutes(),
   };
 
-}
+};
 const generateDescription = () => {
   const description = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
@@ -88,51 +90,52 @@ const generateDescription = () => {
 const generatePhotos = () => {
   const resultPhotosArray = [];
   for (let i = 0; i < 5; i++) {
-    resultPhotosArray[i] = 'http://picsum.photos/248/152?' + getRandomInteger(0, 99).toString();
+    resultPhotosArray[i] = 'http://picsum.photos/248/152?';
+    resultPhotosArray[i]+= getRandomInteger(0, 99).toString();
   }
   return resultPhotosArray;
 };
-const generateCost = () => getRandomInteger(1, 100) * 10;
+const generatePrice = () => getRandomInteger(1, 100) * 10;
 const generateOffers = () => {
   const offers = [
     {
       name: 'Add luggage',
-      cost: 30,
+      price: 30,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Switch to comfort class',
-      cost: 100,
+      price: 100,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Add meal',
-      cost: 15,
+      price: 15,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Choose seats',
-      cost: 5,
+      price: 5,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Travel by train',
-      cost: 40,
+      price: 40,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Rent a car',
-      cost: 200,
+      price: 200,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Add breakfast',
-      cost: 40,
+      price: 40,
       isChosen: Boolean(getRandomInteger(0,1))
     },
     {
       name: 'Lunch in city',
-      cost: 55,
+      price: 55,
       isChosen: Boolean(getRandomInteger(0,1))
     },
   ];
@@ -163,7 +166,7 @@ export const generateTripEvent = () => {
     duration: countDuration(dates.start, dates.end),
     description: generateDescription(),
     photos: generatePhotos(),
-    cost: generateCost(),
+    price: generatePrice(),
     offers: generateOffers(),
     isFavorite: Boolean(getRandomInteger(0,1)),
     isBeingEdited: false
