@@ -2,13 +2,14 @@ import dayjs from 'dayjs';
 
 export const createAddEventItemTemplate = (tripEvent) => {
   const {offers, description, photos} = tripEvent;
-  const startDatetime = dayjs().add(14, 'day').format('DD/MM/YY HH:MM');
-  const translateOfferToHTML = (offer) => {
+  const templateDatetime = dayjs().add(14, 'day').hour(10).minute(0).format('DD/MM/YY HH:mm');
+  const createOfferElement = (offer) => {
     const offerName = offer.name;
     const offerPrice = offer.cost;
+    const offerType = offer.type;
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-name-1" type="checkbox" name="event-offer-name" >
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" >
                         <label class="event__offer-label" for="event-offer-name-1">
                           <span class="event__offer-title">${offerName}</span>
                           &plus;&euro;&nbsp;
@@ -17,18 +18,18 @@ export const createAddEventItemTemplate = (tripEvent) => {
                       </div>
     `;
   };
-  const addableOffersHTML = offers.map(translateOfferToHTML).join('');
-  const createOffersListHTML = (addableOffers) => {
+  const addableOfferElements = offers.map(createOfferElement).join('');
+  const createAddableOfferList = (addableOffers) => {
     if (addableOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-                    ${addableOffersHTML}
+                    ${addableOfferElements}
                   </section>`;
     }
     return '';
   };
-  const offersList = createOffersListHTML(offers);
+  const addableOfferList = createAddableOfferList(offers);
   const translatePhotoToHTML = (photo) => (`<img className="event__photo" src="${photo}">`);
   const photosList = photos.map(translatePhotoToHTML).join('');
   return `<li class="trip-events__item">
@@ -107,10 +108,10 @@ export const createAddEventItemTemplate = (tripEvent) => {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDatetime}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${templateDatetime}">
                     &mdash;
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${startDatetime}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${templateDatetime}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -125,7 +126,7 @@ export const createAddEventItemTemplate = (tripEvent) => {
                   <button class="event__reset-btn" type="reset">Cancel</button>
                 </header>
                 <section class="event__details">
-                  ${offersList}
+                  ${addableOfferList}
 
                   <section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>

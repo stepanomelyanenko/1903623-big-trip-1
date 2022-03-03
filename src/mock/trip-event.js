@@ -101,42 +101,50 @@ const generateOffers = () => {
     {
       name: 'Add luggage',
       price: 30,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Switch to comfort class',
       price: 100,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Add meal',
       price: 15,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Choose seats',
       price: 5,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Travel by train',
       price: 40,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Rent a car',
       price: 200,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Add breakfast',
       price: 40,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
     {
       name: 'Lunch in city',
       price: 55,
-      isChosen: Boolean(getRandomInteger(0,1))
+      isChosen: Boolean(getRandomInteger(0,1)),
+      type: 'type'
     },
   ];
   let count = getRandomInteger(0, 5);

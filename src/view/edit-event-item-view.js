@@ -1,16 +1,17 @@
 import dayjs from 'dayjs';
 
 export const createEditedEventItemTemplate = (tripEvent) => {
-  const {eventType, cost, startDate, endDate, offers, description} = tripEvent;
-  const startDatetime = dayjs(startDate).format('DD/MM/YY HH:MM ');
-  const endDatetime = dayjs(endDate).format('DD/MM/YY HH:MM');
-  const translateOfferToHTML = (offer) => {
+  const {eventType, price, startDate, endDate, offers, description} = tripEvent;
+  const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
+  const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
+  const createEditedOfferElement = (offer) => {
     const isChecked = offer.isChosen ? ' checked=""' : '';
     const offerName = offer.name;
-    const offerPrice = offer.cost;
+    const offerPrice = offer.price;
+    const offerType = offer.type;
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-name-1" type="checkbox" name="event-offer-name"${isChecked}>
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}"${isChecked}>
                         <label class="event__offer-label" for="event-offer-name-1">
                           <span class="event__offer-title">${offerName}</span>
                           +€&nbsp;
@@ -19,8 +20,8 @@ export const createEditedEventItemTemplate = (tripEvent) => {
                       </div>
     `;
   };
-  const editedOffersHTML = offers.map(translateOfferToHTML).join('');
-  const createOffersListHTML = (editedOffers) => {
+  const editedOfferElements = offers.map(createEditedOfferElement).join('');
+  const createOffersList = (editedOffers) => {
     if (editedOffers.length !== 0){
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
@@ -30,7 +31,8 @@ export const createEditedEventItemTemplate = (tripEvent) => {
     }
     return '';
   };
-  const offersList = createOffersListHTML(editedOffersHTML);
+  const offersList = createOffersList(editedOfferElements);
+
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
@@ -118,7 +120,7 @@ export const createEditedEventItemTemplate = (tripEvent) => {
                       <span class="visually-hidden">Price</span>
                       €
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${cost}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
