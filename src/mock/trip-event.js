@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {locations} from './locations';
 
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -24,15 +25,7 @@ const generateEventType = () => {
   return eventTypes[randomIndex];
 };
 const generateLocation = () => {
-  const cities = [
-    'Budapest',
-    'Kyiv',
-    'Yekaterinburg',
-    'Melbourne',
-    'Toronto',
-    'Munich',
-    'Vienna'
-  ];
+  const cities = locations();
 
   const randomIndex = getRandomInteger(0, cities.length - 1);
 
@@ -49,7 +42,6 @@ const generateBeginEndDates = () => {
     .add(getRandomInteger(0, 14), 'day')
     .add(getRandomInteger(0, 59), 'hour')
     .add(getRandomInteger(0, 59), 'minute');
-  //console.log(startDate.toDate(), endDate.toDate());
   return {
     start: startDate.toDate(),
     end: endDate.toDate()
@@ -57,13 +49,7 @@ const generateBeginEndDates = () => {
 };
 const countDuration = (start, end) => {
   const interval = new Date(end - start);
-  /*
-  console.log({
-    days: interval.getUTCDate() - 1,
-    hours: interval.getUTCHours(),
-    minutes: interval.getUTCMinutes(),
-  });
-  */
+
   return {
     days: interval.getUTCDate() - 1,
     hours: interval.getUTCHours(),
@@ -102,49 +88,49 @@ const generateOffers = () => {
       name: 'Add luggage',
       price: 30,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'luggage'
     },
     {
       name: 'Switch to comfort class',
       price: 100,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'flight'
     },
     {
       name: 'Add meal',
       price: 15,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'meal'
     },
     {
       name: 'Choose seats',
       price: 5,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'flight'
     },
     {
       name: 'Travel by train',
       price: 40,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'transport'
     },
     {
       name: 'Rent a car',
       price: 200,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'car'
     },
     {
       name: 'Add breakfast',
       price: 40,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'meal'
     },
     {
       name: 'Lunch in city',
       price: 55,
       isChosen: Boolean(getRandomInteger(0,1)),
-      type: 'type'
+      type: 'meal'
     },
   ];
   let count = getRandomInteger(0, 5);
