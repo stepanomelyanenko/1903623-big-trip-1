@@ -7,6 +7,7 @@ const getRandomInteger = (a = 0, b = 1) => {
 
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
+
 const generateEventType = () => {
   const eventTypes = [
     'taxi',
@@ -24,6 +25,7 @@ const generateEventType = () => {
 
   return eventTypes[randomIndex];
 };
+
 const generateLocation = () => {
   const cities = locations();
 
@@ -31,6 +33,7 @@ const generateLocation = () => {
 
   return cities[randomIndex];
 };
+
 const generateBeginEndDates = () => {
   const maxGap = 14;
   const startDate = dayjs()
@@ -47,6 +50,7 @@ const generateBeginEndDates = () => {
     end: endDate.toDate()
   };
 };
+
 const countDuration = (start, end) => {
   const interval = new Date(end - start);
 
@@ -57,6 +61,7 @@ const countDuration = (start, end) => {
   };
 
 };
+
 const generateDescription = () => {
   const description = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' +
@@ -73,6 +78,7 @@ const generateDescription = () => {
 
   return description[randomIndex];
 };
+
 const generatePhotos = () => {
   const resultPhotosArray = [];
   for (let i = 0; i < 5; i++) {
@@ -81,6 +87,7 @@ const generatePhotos = () => {
   }
   return resultPhotosArray;
 };
+
 const generatePrice = () => getRandomInteger(1, 100) * 10;
 const generateOffers = () => {
   const offers = [

@@ -3,7 +3,7 @@ import {locations} from '../mock/locations';
 import {eventTypes} from '../mock/event-types';
 import {createElement} from '../render';
 
-const createEventItemEditTemplate = (tripEvent) => {
+const createEventEditTemplate = (tripEvent) => {
   const {eventType, price, location, startDate, endDate, offers, description} = tripEvent;
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
@@ -13,6 +13,7 @@ const createEventItemEditTemplate = (tripEvent) => {
     const offerName = offer.name;
     const offerPrice = offer.price;
     const offerType = offer.type;
+
     return `<div class="event__available-offers">
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}"${isChecked}>
@@ -29,6 +30,7 @@ const createEventItemEditTemplate = (tripEvent) => {
       return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>${editedOffers}</section>`;
     }
+
     return '';
   };
   const createLocationOption = (city) => (`<option value="${city}"></option>`);
@@ -41,6 +43,7 @@ const createEventItemEditTemplate = (tripEvent) => {
                           <label class="event__type-label  event__type-label--${currentType}" for="event-type-${currentType}-1">${label}</label>
                         </div>`;
     };
+
     return types.map(createType).join('');
   };
 
@@ -109,7 +112,7 @@ const createEventItemEditTemplate = (tripEvent) => {
             </li>`;
 };
 
-export default class EventItemEditView {
+export default class EventEditView {
   #element = null;
   #event = null;
 
@@ -126,7 +129,7 @@ export default class EventItemEditView {
   }
 
   get template() {
-    return createEventItemEditTemplate(this.#event);
+    return createEventEditTemplate(this.#event);
   }
 
   removeElement() {
