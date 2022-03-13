@@ -74,10 +74,10 @@ const createTripEventsItemTemplate = (tripEvent) => {
 
 export default class TripEventItemView {
   #element = null;
-  #event = null;
+  #tripEvent = null;
 
   constructor(event) {
-    this.#event = event;
+    this.#tripEvent = event;
   }
 
   get element() {
@@ -89,7 +89,7 @@ export default class TripEventItemView {
   }
 
   get template() {
-    return createTripEventsItemTemplate(this.#event);
+    return createTripEventsItemTemplate(this.#tripEvent);
   }
 
   removeElement() {

@@ -115,10 +115,10 @@ const createEventAddTemplate = (tripEvent) => {
 
 export default class EventAddView {
   #element = null;
-  #event = null;
+  #tripEvent = null;
 
   constructor(event) {
-    this.#event = event;
+    this.#tripEvent = event;
   }
 
   get element() {
@@ -130,7 +130,7 @@ export default class EventAddView {
   }
 
   get template() {
-    return createEventAddTemplate(this.#event);
+    return createEventAddTemplate(this.#tripEvent);
   }
 
   removeElement() {

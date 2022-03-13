@@ -114,10 +114,10 @@ const createEventEditTemplate = (tripEvent) => {
 
 export default class EventEditView {
   #element = null;
-  #event = null;
+  #tripEvent = null;
 
   constructor(event) {
-    this.#event = event;
+    this.#tripEvent = event;
   }
 
   get element() {
@@ -129,7 +129,7 @@ export default class EventEditView {
   }
 
   get template() {
-    return createEventEditTemplate(this.#event);
+    return createEventEditTemplate(this.#tripEvent);
   }
 
   removeElement() {
