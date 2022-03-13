@@ -1,14 +1,18 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
 
-const createTripEventsItemTemplate = (tripEvent) => {
+const createEventsItemTemplate = (tripEvent) => {
   const {eventType, location, price, startDate, endDate, duration, offers, isFavorite} = tripEvent;
+
   const startDay = dayjs(startDate).format('MMM D');
   const beginDate = dayjs(startDate).format('YYYY-MM-DD');
+
   const startTime = dayjs(startDate).format('HH:mm');
   const startDatetime = dayjs(startDate).format('YYYY-MM-DDTHH:mm');
+
   const endTime = dayjs(endDate).format('HH:mm');
   const endDatetime = dayjs(endDate).format('YYYY-MM-DDTHH:mm');
+
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
   const createOfferMarkup = (offer) => {
@@ -81,7 +85,7 @@ export default class EventItemView extends AbstractView {
   }
 
   get template() {
-    return createTripEventsItemTemplate(this.#tripEvent);
+    return createEventsItemTemplate(this.#tripEvent);
   }
 
   setEditClickHandler = (callback) => {
@@ -94,3 +98,4 @@ export default class EventItemView extends AbstractView {
     this._callback.editClick();
   }
 }
+

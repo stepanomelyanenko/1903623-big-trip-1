@@ -9,3 +9,4 @@ export const eventTypes = () => ([
   'sightseeing',
   'restaurant'
 ]);
+

@@ -7,3 +7,4 @@ export default class EventsListView extends AbstractView {
     return createEventsListTemplate();
   }
 }
+

@@ -2,54 +2,17 @@ import dayjs from 'dayjs';
 import {locations} from '../mock/locations';
 import {eventTypes} from '../mock/event-types';
 import AbstractView from './abstract-view';
+import {createOffersSectionMarkup, createEventTypesMarkup} from '../utils/forms';
 
 const createEventAddTemplate = (tripEvent) => {
   const {offers, description, photos} = tripEvent;
   const eventType = 'check-in';
   const templateDatetime = dayjs().add(14, 'day').hour(0).minute(0).format('DD/MM/YY HH:mm');
-
-  const createOfferMarkup = (offer) => {
-    const offerName = offer.name;
-    const offerPrice = offer.price;
-    const offerType = offer.type;
-    return `<div class="event__available-offers">
-                      <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" >
-                        <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${offerName}</span>
-                          &plus;&euro;&nbsp;
-                          <span class="event__offer-price">${offerPrice}</span>
-                        </label>
-                      </div>
-    `;
-  };
-  const createOffersListMarkup = (addableOffers) => {
-    if (addableOffers.length !== 0){
-      return `<section class="event__section  event__section--offers">
-                    <h3 class="event__section-title  event__section-title--offers">Offers</h3>
-                    ${offers.map(createOfferMarkup).join('')}</section>`;
-    }
-    return '';
-  };
-  const createPhotoMarkup = (photo) => (`<img className="event__photo" src="${photo}">`);
-  const createLocationOption = (city) => (`<option value="${city}"></option>`);
-  const createEventTypesMarkup = (types = eventTypes(), chosenEventType) => {
-    const createType = (currentType) => {
-      const isChecked = currentType === chosenEventType ? 'checked=""' : '';
-      const label = currentType.charAt(0).toUpperCase() + currentType.slice(1);
-      return `<div class="event__type-item">
-                          <input id="event-type-${currentType}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${currentType}" ${isChecked}>
-                          <label class="event__type-label  event__type-label--${currentType}" for="event-type-${currentType}-1">${label}</label>
-                        </div>`;
-    };
-    return types.map(createType).join('');
-  };
-
-  const addableOffersMarkup = createOffersListMarkup(offers);
-  const photosList = photos.map(createPhotoMarkup).join('');
-  const locationOptions = locations().map(createLocationOption).join('');
-  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
+  const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
+  const locationOptions = locations().map((x) => (`<option value="${x}"></option>`)).join('');
   const eventTypeLabel = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+  const addableOffersMarkup = createOffersSectionMarkup(offers);
+  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">

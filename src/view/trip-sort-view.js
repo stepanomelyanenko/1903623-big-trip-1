@@ -34,3 +34,4 @@ export default class TripSortView extends AbstractView {
     return createTripSortTemplate();
   }
 }
+

@@ -11,3 +11,4 @@ export default class NoTripEventsView extends AbstractView {
     return createNoTripEventsTemplate();
   }
 }
+

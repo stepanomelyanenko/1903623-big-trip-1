@@ -12,3 +12,4 @@ export default class TripTabsView extends AbstractView {
     return createTripTabsTemplate();
   }
 }
+

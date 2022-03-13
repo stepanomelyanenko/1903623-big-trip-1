@@ -173,3 +173,4 @@ export const generateTripEvent = () => {
     isBeingEdited: false
   };
 };
+

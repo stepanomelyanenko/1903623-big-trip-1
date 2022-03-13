@@ -7,3 +7,4 @@ export const locations = () => ([
   'Munich',
   'Vienna'
 ]);
+

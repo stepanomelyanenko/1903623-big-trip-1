@@ -26,3 +26,4 @@ export default class TripFiltersView extends AbstractView {
     return createTripFiltersTemplate();
   }
 }
+

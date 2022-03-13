@@ -6,8 +6,8 @@ import EventsListView from './view/events-list-view.js';
 import EventAddView from './view/event-add-view.js';
 import EventEditView from './view/event-edit-view';
 import EventItemView from './view/event-item-view.js';
-import {generateTripEvent} from './mock/trip-event';
 import NoTripEventsView from './view/no-trip-events-view';
+import {generateTripEvent} from './mock/trip-event';
 
 const TRIP_EVENTS_COUNT = 10;
 
@@ -24,8 +24,8 @@ render(tripControlsFiltersElement, new TripFiltersView(), RenderPosition.BEFOREE
 if (tripEvents.length === 0) {
   render(tripEventsElement, new NoTripEventsView(), RenderPosition.BEFOREEND);
 } else {
-  render(tripEventsElement, tripEventsListElement, RenderPosition.BEFOREEND);
   render(tripEventsElement, new TripSortView(), RenderPosition.AFTERBEGIN);
+  render(tripEventsElement, tripEventsListElement, RenderPosition.BEFOREEND);
   render(tripEventsListElement.element, new EventAddView(tripEvents[0]), RenderPosition.BEFOREEND);
 }
 
@@ -69,3 +69,4 @@ const renderTripEvent = (tripEventListElement, tripEvent) => {
 for (let i = 1; i < TRIP_EVENTS_COUNT; i++) {
   renderTripEvent(tripEventsListElement.element, tripEvents[i]);
 }
+
