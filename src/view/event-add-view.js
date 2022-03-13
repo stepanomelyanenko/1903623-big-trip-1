@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import {locations} from '../mock/locations';
 import {eventTypes} from '../mock/event-types';
-import {createElement} from '../render';
+import AbstractView from './abstract-view';
 
 const createEventAddTemplate = (tripEvent) => {
   const {offers, description, photos} = tripEvent;
@@ -113,27 +113,16 @@ const createEventAddTemplate = (tripEvent) => {
             </li>`;
 };
 
-export default class EventAddView {
-  #element = null;
+export default class EventAddView extends AbstractView {
   #tripEvent = null;
 
-  constructor(event) {
-    this.#tripEvent = event;
-  }
-
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
+  constructor(tripEvent) {
+    super();
+    this.#tripEvent = tripEvent;
   }
 
   get template() {
     return createEventAddTemplate(this.#tripEvent);
   }
-
-  removeElement() {
-    this.#element = null;
-  }
 }
+

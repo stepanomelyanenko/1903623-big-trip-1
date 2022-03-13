@@ -5,7 +5,7 @@ import TripSortView from './view/trip-sort-view.js';
 import EventsListView from './view/events-list-view.js';
 import EventAddView from './view/event-add-view.js';
 import EventEditView from './view/event-edit-view';
-import TripEventItemView from './view/trip-event-item-view.js';
+import EventItemView from './view/event-item-view.js';
 import {generateTripEvent} from './mock/trip-event';
 import NoTripEventsView from './view/no-trip-events-view';
 
@@ -30,7 +30,7 @@ if (tripEvents.length === 0) {
 }
 
 const renderEvent = (eventListElement, event) => {
-  const eventItemComponent = new TripEventItemView(event);
+  const eventItemComponent = new EventItemView(event);
   const eventEditComponent = new EventEditView(event);
 
   const replaceItemToForm = () => {
