@@ -6,6 +6,9 @@ export const RenderPosition = {
 };
 
 export const render = (container, element, place) => {
+  
+
+
   switch (place) {
     case RenderPosition.BEFOREBEGIN:
       container.before(element);
