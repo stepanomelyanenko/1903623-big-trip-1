@@ -18,15 +18,15 @@ const tripControlsFiltersElement = document.querySelector('.trip-controls__filte
 const tripEventsElement = document.querySelector('.trip-events');
 const tripEventsListElement = new EventsListView();
 
-render(tripControlsNavigationElement, new TripTabsView().element, RenderPosition.BEFOREEND);
-render(tripControlsFiltersElement, new TripFiltersView().element, RenderPosition.BEFOREEND);
+render(tripControlsNavigationElement, new TripTabsView(), RenderPosition.BEFOREEND);
+render(tripControlsFiltersElement, new TripFiltersView(), RenderPosition.BEFOREEND);
 
 if (tripEvents.length === 0) {
-  render(tripEventsElement, new NoTripEventsView().element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, new NoTripEventsView(), RenderPosition.BEFOREEND);
 } else {
-  render(tripEventsElement, tripEventsListElement.element, RenderPosition.BEFOREEND);
-  render(tripEventsElement, new TripSortView().element, RenderPosition.AFTERBEGIN);
-  render(tripEventsListElement.element, new EventAddView(tripEvents[0]).element, RenderPosition.BEFOREEND);
+  render(tripEventsElement, tripEventsListElement, RenderPosition.BEFOREEND);
+  render(tripEventsElement, new TripSortView(), RenderPosition.AFTERBEGIN);
+  render(tripEventsListElement.element, new EventAddView(tripEvents[0]), RenderPosition.BEFOREEND);
 }
 
 const renderTripEvent = (tripEventListElement, tripEvent) => {
@@ -63,7 +63,7 @@ const renderTripEvent = (tripEventListElement, tripEvent) => {
     document.removeEventListener('keydown', onEscKeyDown);
   });
 
-  render(tripEventListElement, eventItemComponent.element, RenderPosition.BEFOREEND);
+  render(tripEventListElement, eventItemComponent, RenderPosition.BEFOREEND);
 };
 
 for (let i = 1; i < TRIP_EVENTS_COUNT; i++) {
