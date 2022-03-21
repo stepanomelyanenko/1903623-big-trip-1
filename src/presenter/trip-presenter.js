@@ -1,52 +1,52 @@
 import {render, RenderPosition} from '../utils/render';
-import EventsListView from '../view/events-list-view';
-import NoTripEventsView from '../view/no-trip-events-view';
+import PointsListView from '../view/points-list-view';
+import NoTripPointsView from '../view/no-trip-points-view';
 import TripSortView from '../view/trip-sort-view';
-import EventItemView from '../view/event-item-view';
-import EventEditView from '../view/event-edit-view';
+import PointItemView from '../view/point-item-view';
+import PointEditView from '../view/point-edit-view';
 
 export default class TripPresenter {
   #mainElement = null;
-  #tripEventsElement = null;
+  #tripPointsElement = null;
 
   #tripSortComponent = new TripSortView();
-  #noTripEventsComponent = new NoTripEventsView();
-  #tripEventsListElement = new EventsListView();
+  #noTripPointsComponent = new NoTripPointsView();
+  #tripPointsListElement = new PointsListView();
 
-  #tripEvents = [];
+  #tripPoints = [];
 
   constructor(mainElement) {
     this.#mainElement = mainElement;
 
-    this.#tripEventsElement = this.#mainElement.querySelector('.trip-events');
+    this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
   }
 
-  init = (tripEvents) => {
-    this.#tripEvents = [...tripEvents];
+  init = (tripPoints) => {
+    this.#tripPoints = [...tripPoints];
     this.#renderMain();
   }
 
   #renderNoTasks = () => {
-    render(this.#tripEventsElement, this.#noTripEventsComponent, RenderPosition.BEFOREEND);
+    render(this.#tripPointsElement, this.#noTripPointsComponent, RenderPosition.BEFOREEND);
   }
 
-  #renderTripEventsListElement = () => {
-    render(this.#tripEventsElement, this.#tripEventsListElement, RenderPosition.BEFOREEND);
+  #renderTripPointsListElement = () => {
+    render(this.#tripPointsElement, this.#tripPointsListElement, RenderPosition.BEFOREEND);
   }
 
   #renderSort = () => {
-    render(this.#tripEventsElement, this.#tripSortComponent, RenderPosition.AFTERBEGIN);
+    render(this.#tripPointsElement, this.#tripSortComponent, RenderPosition.AFTERBEGIN);
   }
 
-  #renderTripEvent = (tripEvent) => {
-    const eventItemComponent = new EventItemView(tripEvent);
-    const eventEditComponent = new EventEditView(tripEvent);
+  #renderTripEvent = (tripPoint) => {
+    const eventItemComponent = new PointItemView(tripPoint);
+    const eventEditComponent = new PointEditView(tripPoint);
 
     const replaceItemToForm = () => {
-      this.#tripEventsListElement.replaceChild(eventEditComponent.element, eventItemComponent.element);
+      this.#tripPointsListElement.replaceChild(eventEditComponent.element, eventItemComponent.element);
     };
     const replaceFormToItem = () => {
-      this.#tripEventsListElement.replaceChild(eventItemComponent.element, eventEditComponent.element);
+      this.#tripPointsListElement.replaceChild(eventItemComponent.element, eventEditComponent.element);
     };
 
     const onEscKeyDown = (evt) => {
@@ -72,22 +72,22 @@ export default class TripPresenter {
       document.removeEventListener('keydown', onEscKeyDown);
     });
 
-    render(this.#tripEventsListElement, eventItemComponent, RenderPosition.BEFOREEND);
+    render(this.#tripPointsListElement, eventItemComponent, RenderPosition.BEFOREEND);
   };
 
-  #renderTripEventsList = () => {
-    for (let i = 0; i < this.#tripEvents.length; i++) {
-      this.#renderTripEvent(this.#tripEvents[i]);
+  #renderTripPointsList = () => {
+    for (let i = 0; i < this.#tripPoints.length; i++) {
+      this.#renderTripEvent(this.#tripPoints[i]);
     }
   }
 
   #renderMain = () => {
-    if (this.#tripEvents.length === 0) {
+    if (this.#tripPoints.length === 0) {
       this.#renderNoTasks();
     } else {
       this.#renderSort();
-      this.#renderTripEventsListElement();
-      this.#renderTripEventsList();
+      this.#renderTripPointsListElement();
+      this.#renderTripPointsList();
     }
   }
 }

@@ -4,15 +4,15 @@ import {eventTypes} from '../mock/event-types';
 import AbstractView from './abstract-view';
 import {createOffersSectionMarkup, createEventTypesMarkup} from '../utils/forms';
 
-const createEventAddTemplate = (tripEvent) => {
-  const {offers, description, photos} = tripEvent;
-  const eventType = 'check-in';
+const createPointAddTemplate = (tripPoint) => {
+  const {offers, description, photos} = tripPoint;
+  const pointType = 'check-in';
   const templateDatetime = dayjs().add(14, 'day').hour(0).minute(0).format('DD/MM/YY HH:mm');
   const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
   const locationOptions = locations().map((x) => (`<option value="${x}"></option>`)).join('');
-  const eventTypeLabel = eventType.charAt(0).toUpperCase() + eventType.slice(1);
+  const eventTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
   const addableOffersMarkup = createOffersSectionMarkup(offers);
-  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), eventType);
+  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), pointType);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -20,7 +20,7 @@ const createEventAddTemplate = (tripEvent) => {
                   <div class="event__type-wrapper">
                     <label class="event__type  event__type-btn" for="event-type-toggle-1">
                       <span class="visually-hidden">Choose event type</span>
-                      <img class="event__type-icon" width="17" height="17" src="img/icons/${eventType}.png" alt="Event type icon">
+                      <img class="event__type-icon" width="17" height="17" src="img/icons/${pointType}.png" alt="Event type icon">
                     </label>
                     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
@@ -76,16 +76,16 @@ const createEventAddTemplate = (tripEvent) => {
             </li>`;
 };
 
-export default class EventAddView extends AbstractView {
-  #tripEvent = null;
+export default class PointAddView extends AbstractView {
+  #tripPoint = null;
 
-  constructor(tripEvent) {
+  constructor(tripPoint) {
     super();
-    this.#tripEvent = tripEvent;
+    this.#tripPoint = tripPoint;
   }
 
   get template() {
-    return createEventAddTemplate(this.#tripEvent);
+    return createPointAddTemplate(this.#tripPoint);
   }
 }
 

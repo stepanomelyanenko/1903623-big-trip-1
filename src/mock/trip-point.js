@@ -8,8 +8,8 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
-const generateEventType = () => {
-  const eventTypes = [
+const generatePointType = () => {
+  const pointTypes = [
     'taxi',
     'bus',
     'train',
@@ -21,9 +21,9 @@ const generateEventType = () => {
     'restaurant'
   ];
 
-  const randomIndex = getRandomInteger(0, eventTypes.length - 1);
+  const randomIndex = getRandomInteger(0, pointTypes.length - 1);
 
-  return eventTypes[randomIndex];
+  return pointTypes[randomIndex];
 };
 
 const generateLocation = () => {
@@ -156,11 +156,11 @@ const generateOffers = () => {
   return result;
 };
 
-export const generateTripEvent = () => {
+export const generateTripPoint = () => {
   const dates = generateBeginEndDates();
 
   return {
-    eventType: generateEventType(),
+    pointType: generatePointType(),
     location: generateLocation(),
     startDate: dates.start,
     endDate: dates.end,
