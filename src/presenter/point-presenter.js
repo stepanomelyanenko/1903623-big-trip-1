@@ -26,7 +26,7 @@ export default class PointPresenter {
     this.#pointItemComponent.setEditClickHandler(this.#handleEditClick);
     this.#pointEditComponent.setRollupClickHandler(this.#handleRollupClick);
     this.#pointEditComponent.setFormSubmitHandler(this.#handleFormSubmit);
-    
+
     if (prevPointItemComponent === null || prevPointEditComponent === null) {
       render(this.#tripPointsListElement, this.#pointItemComponent, RenderPosition.BEFOREEND);
       return;
