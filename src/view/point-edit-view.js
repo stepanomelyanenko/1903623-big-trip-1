@@ -84,7 +84,7 @@ export default class PointEditView extends AbstractView {
     return createEventEditTemplate(this.#tripPoint);
   }
 
-  setFormSubmit = (callback) => {
+  setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
   }
