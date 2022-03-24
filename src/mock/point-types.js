@@ -1,4 +1,4 @@
-export const eventTypes = () => ([
+export const pointTypes = () => ([
   'taxi',
   'bus',
   'train',

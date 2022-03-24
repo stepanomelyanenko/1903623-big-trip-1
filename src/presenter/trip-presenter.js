@@ -34,7 +34,11 @@ export default class TripPresenter {
     render(this.#tripPointsElement, this.#tripPointsListElement, RenderPosition.BEFOREEND);
   }
 
-  #handleTaskChange = (updatedPoint) => {
+  #handleModeChange = () => {
+    this.#pointPresenter.forEach((presenter) => presenter.resetView());
+  }
+
+  #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   }
@@ -43,15 +47,15 @@ export default class TripPresenter {
     render(this.#tripPointsElement, this.#tripSortComponent, RenderPosition.AFTERBEGIN);
   }
 
-  #renderTripEvent = (point) => {
-    const pointPresenter = new PointPresenter(this.#tripPointsListElement);
+  #renderTripPoint = (point) => {
+    const pointPresenter = new PointPresenter(this.#tripPointsListElement, this.#handlePointChange, this.#handleModeChange);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
   #renderTripPointsList = () => {
     for (let i = 0; i < this.#tripPoints.length; i++) {
-      this.#renderTripEvent(this.#tripPoints[i]);
+      this.#renderTripPoint(this.#tripPoints[i]);
     }
   }
 

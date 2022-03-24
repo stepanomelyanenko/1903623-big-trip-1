@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import {locations} from '../mock/locations';
-import {eventTypes} from '../mock/event-types';
+import {pointTypes} from '../mock/point-types';
 import AbstractView from './abstract-view';
 import {createOffersSectionMarkup, createEventTypesMarkup} from '../utils/forms';
 
@@ -12,7 +12,7 @@ const createPointAddTemplate = (tripPoint) => {
   const locationOptions = locations().map((x) => (`<option value="${x}"></option>`)).join('');
   const eventTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
   const addableOffersMarkup = createOffersSectionMarkup(offers);
-  const eventTypesMarkup = createEventTypesMarkup(eventTypes(), pointType);
+  const eventTypesMarkup = createEventTypesMarkup(pointTypes(), pointType);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
