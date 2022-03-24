@@ -16,3 +16,4 @@ render(tripControlsFiltersElement, new TripFiltersView(), RenderPosition.BEFOREE
 
 const tripPresenter = new TripPresenter(pageMainElement);
 tripPresenter.init(tripPoints);
+
