@@ -2,12 +2,14 @@ import dayjs from 'dayjs';
 import {locations} from '../mock/locations';
 import {pointTypes} from '../mock/point-types';
 import AbstractView from './abstract-view';
+import SmartView from './smart-view';
 import {createEventTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
 
-const createEventEditTemplate = (tripPoint) => {
-  const {pointType, price, location, startDate, endDate, offers, description} = tripPoint;
+const createPointEditTemplate = (tripPoint) => {
+  const {pointType, price, location, startDate, endDate, offers, description, photos} = tripPoint;
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
+  const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
   const locationOptions = locations().map((x) => (`<option value="${x}"></option>`)).join('');
   const eventTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
   const editedOffersMarkup = createOffersSectionMarkup(offers);
@@ -66,6 +68,11 @@ const createEventEditTemplate = (tripPoint) => {
                 <section class="event__details">${editedOffersMarkup}<section class="event__section  event__section--destination">
                     <h3 class="event__section-title  event__section-title--destination">Destination</h3>
                     <p class="event__destination-description">${description}</p>
+                    <div class="event__photos-container">
+                      <div class="event__photos-tape">
+                        ${photosList}
+                      </div>
+                    </div>
                   </section>
                 </section>
               </form>
@@ -81,7 +88,7 @@ export default class PointEditView extends AbstractView {
   }
 
   get template() {
-    return createEventEditTemplate(this.#tripPoint);
+    return createPointEditTemplate(this.#tripPoint);
   }
 
   setFormSubmitHandler = (callback) => {
@@ -103,6 +110,125 @@ export default class PointEditView extends AbstractView {
   #rollupClickHandler = (evt) => {
     evt.preventDefault();
     this._callback.rollupClick();
+  }
+}
+
+export class TaskEditView extends SmartView {
+  constructor(tripPoint) {
+    super();
+    this._data = TaskEditView.parseTaskToData(tripPoint);
+
+    this.#setInnerHandlers();
+  }
+
+  get template() {
+    return createPointEditTemplate(this._data);
+  }
+
+  restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.setFormSubmitHandler(this._callback.formSubmit);
+  }
+
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
+  #setInnerHandlers = () => {
+    // this.element.querySelector('.card__date-deadline-toggle')
+    //   .addEventListener('click', this.#dueDateToggleHandler);
+    // this.element.querySelector('.card__repeat-toggle')
+    //   .addEventListener('click', this.#repeatingToggleHandler);
+    // this.element.querySelector('.card__text')
+    //   .addEventListener('input', this.#descriptionInputHandler);
+    //
+    // if (this._data.isRepeating) {
+    //   this.element.querySelector('.card__repeat-days-inner')
+    //     .addEventListener('change', this.#repeatingChangeHandler);
+    // }
+    //
+    // this.element.querySelector('.card__colors-wrap')
+    //   .addEventListener('change', this.#colorChangeHandler);
+
+    this.element.querySelector('.card__date-deadline-toggle')
+      .addEventListener('click', this.#dueDateToggleHandler);
+  }
+
+  #dueDateToggleHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      isDueDate: !this._data.isDueDate,
+      // Логика следующая: если выбор даты нужно показать,
+      // то есть когда "!this._data.isDueDate === true",
+      // тогда isRepeating должно быть строго false.
+      isRepeating: !this._data.isDueDate ? false : this._data.isRepeating,
+    });
+  }
+
+  #repeatingToggleHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      isRepeating: !this._data.isRepeating,
+      // Аналогично, но наоборот, для повторения
+      isDueDate: !this._data.isRepeating ? false : this._data.isDueDate,
+    });
+  }
+
+  #descriptionInputHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      description: evt.target.value,
+    }, true);
+  }
+
+  #repeatingChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      repeating: {...this._data.repeating, [evt.target.value]: evt.target.checked},
+    });
+  }
+
+  #colorChangeHandler = (evt) => {
+    evt.preventDefault();
+    this.updateData({
+      color: evt.target.value,
+    });
+  }
+
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.formSubmit(TaskEditView.parseDataToTask(this._data));
+  }
+
+  static parseTaskToData = (task) => ({...task,
+    isDueDate: task.dueDate !== null,
+    isRepeating: isTaskRepeating(task.repeating),
+  });
+
+  static parseDataToTask = (data) => {
+    const task = {...data};
+
+    if (!task.isDueDate) {
+      task.dueDate = null;
+    }
+
+    if (!task.isRepeating) {
+      task.repeating = {
+        mo: false,
+        tu: false,
+        we: false,
+        th: false,
+        fr: false,
+        sa: false,
+        su: false,
+      };
+    }
+
+    delete task.isDueDate;
+    delete task.isRepeating;
+
+    return task;
   }
 }
 

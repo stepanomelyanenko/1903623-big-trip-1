@@ -6,6 +6,7 @@ import TripPresenter from './presenter/trip-presenter';
 
 const TRIP_POINTS_COUNT = 10;
 const tripPoints = Array.from({length: TRIP_POINTS_COUNT}, generateTripPoint);
+console.log(tripPoints);
 const pageMainElement = document.querySelector('.page-body');
 
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
