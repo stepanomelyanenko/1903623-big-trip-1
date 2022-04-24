@@ -4,6 +4,8 @@ import NoTripPointsView from '../view/no-trip-points-view';
 import TripSortView from '../view/trip-sort-view';
 import PointPresenter from './point-presenter';
 import {updateItem} from '../utils/common';
+import {SortType} from '../utils/const';
+import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point';
 
 export default class TripPresenter {
   #mainElement = null;
@@ -15,14 +17,19 @@ export default class TripPresenter {
 
   #tripPoints = [];
   #pointPresenter = new Map();
+
+  #currentSortType = SortType.SORT_DAY;
+  #sourcedTripPoints = [];
+
   constructor(mainElement) {
     this.#mainElement = mainElement;
-
     this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
   }
 
   init = (tripPoints) => {
     this.#tripPoints = [...tripPoints];
+    this.#sourcedTripPoints = [...tripPoints];
+
     this.#renderMain();
   }
 
@@ -40,13 +47,36 @@ export default class TripPresenter {
 
   #handlePointChange = (updatedPoint) => {
     this.#tripPoints = updateItem(this.#tripPoints, updatedPoint);
+    this.#sourcedTripPoints = updateItem(this.#sourcedTripPoints, updatedPoint);
     this.#pointPresenter.get(updatedPoint.id).init(updatedPoint);
   }
 
+  #sortTasks = (sortType) => {
+    switch (sortType) {
+      case SortType.SORT_DAY:
+        this.#tripPoints.sort(sortTaskByDay);
+        break;
+      case SortType.SORT_TIME:
+        this.#tripPoints.sort(sortTaskByDuration);
+        break;
+      case SortType.SORT_PRICE:
+        this.#tripPoints.sort(sortTaskByPrice);
+        break;
+      default:
+        this.#tripPoints = [...this.#sourcedTripPoints];
+    }
+
+    this.#currentSortType = sortType;
+  }
+
   #handleSortTypeChange = (sortType) => {
-    // - Сортируем задачи
-    // - Очищаем список
-    // - Рендерим список заново
+    if (this.#currentSortType === sortType) {
+      return;
+    }
+
+    this.#sortTasks(sortType);
+    this.#clearPointList();
+    this.#renderTripPointsList();
   }
 
   #renderSort = () => {
@@ -72,14 +102,14 @@ export default class TripPresenter {
     } else {
       this.#renderSort();
       this.#renderTripPointsListElement();
+      this.#sortTasks(this.#currentSortType);
       this.#renderTripPointsList();
     }
   }
 
-  #clearTaskList = () => {
+  #clearPointList = () => {
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
   }
-
 }
 

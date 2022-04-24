@@ -85,15 +85,15 @@ export default class PointPresenter {
       evt.preventDefault();
       this.#replaceFormToItem();
     }
-  };
+  }
 
   #handleEditClick = () => {
     this.#replaceItemToForm();
-  };
+  }
 
   #handleRollupClick = () => {
     this.#replaceFormToItem();
-  };
+  }
 
   #handleFavoriteClick = () => {
     this.#changeData({...this.#tripPoint, isFavorite: !this.#tripPoint.isFavorite});
@@ -102,6 +102,6 @@ export default class PointPresenter {
   #handleFormSubmit = (point) => {
     this.#changeData(point);
     this.#replaceFormToItem();
-  };
+  }
 }
 
