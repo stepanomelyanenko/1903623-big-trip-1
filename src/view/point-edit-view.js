@@ -11,16 +11,17 @@ const createPointEditTemplate = (tripPoint) => {
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
 
-  const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
-
+  //const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
+  const photosList = null;
   const locationOptions = destinations().map((x) => (`<option value="${x}"></option>`)).join('');
 
-  const pointTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
+  //const pointTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
+  const pointTypeLabel = null;
 
   const editedOffersMarkup = createOffersSectionMarkup(offers);
 
-  const eventTypesMarkup = createEventTypesMarkup(offers(), pointType);
-
+  //const eventTypesMarkup = createEventTypesMarkup(offers(), pointType);
+  const eventTypesMarkup = null;
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">

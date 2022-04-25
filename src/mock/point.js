@@ -42,6 +42,7 @@ const generateFromToDates = () => {
 export const generatePoint = () => {
   const dates = generateFromToDates();
   const destinationArray = destinations();
+  const offerArray = offers();
 
   // return {
   //   id: nanoid(),
@@ -65,8 +66,8 @@ export const generatePoint = () => {
     'destination': destinationArray[getRandomInteger(0,destinationArray.length-1)],
     'id': nanoid(),
     'is_favorite': Boolean(getRandomInteger(0,1)),
-    'offers': offers(),
-    'type': 'bus'
+    'offers': offerArray,
+    'type': offerArray[getRandomInteger(0,offerArray.length-1)].type
   };
 };
 

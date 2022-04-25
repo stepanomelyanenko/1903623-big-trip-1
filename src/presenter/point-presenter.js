@@ -1,4 +1,4 @@
-import PointItemView from '../view/point-item-view';
+import PointView from '../view/point-view';
 import PointEditView from '../view/point-edit-view';
 import {render, RenderPosition, replace, remove} from '../utils/render';
 
@@ -30,7 +30,7 @@ export default class PointPresenter {
     const prevPointItemComponent = this.#pointItemComponent;
     const prevPointEditComponent = this.#pointEditComponent;
 
-    this.#pointItemComponent =  new PointItemView(tripPoint);
+    this.#pointItemComponent =  new PointView(tripPoint);
     this.#pointEditComponent = new PointEditView(tripPoint);
 
     this.#pointItemComponent.setEditClickHandler(this.#handleEditClick);
@@ -96,7 +96,7 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick = () => {
-    this.#changeData({...this.#tripPoint, isFavorite: !this.#tripPoint.isFavorite});
+    this.#changeData({...this.#tripPoint, is_favorite: !this.#tripPoint.is_favorite});
   }
 
   #handleFormSubmit = (point) => {
