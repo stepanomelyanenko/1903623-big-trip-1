@@ -1,19 +1,25 @@
 import dayjs from 'dayjs';
-import {locations} from '../mock/locations';
-import {pointTypes} from '../mock/point-types';
+import {destinations} from '../mock/destinations';
+import {offers} from '../mock/offers';
 import AbstractView from './abstract-view';
 import SmartView from './smart-view';
 import {createEventTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
 
 const createPointEditTemplate = (tripPoint) => {
   const {pointType, price, location, startDate, endDate, offers, description, photos} = tripPoint;
+
   const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
   const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
+
   const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
-  const locationOptions = locations().map((x) => (`<option value="${x}"></option>`)).join('');
-  const eventTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
+
+  const locationOptions = destinations().map((x) => (`<option value="${x}"></option>`)).join('');
+
+  const pointTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
+
   const editedOffersMarkup = createOffersSectionMarkup(offers);
-  const eventTypesMarkup = createEventTypesMarkup(pointTypes(), pointType);
+
+  const eventTypesMarkup = createEventTypesMarkup(offers(), pointType);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -35,7 +41,7 @@ const createPointEditTemplate = (tripPoint) => {
 
                   <div class="event__field-group  event__field-group--destination">
                     <label class="event__label  event__type-output" for="event-destination-1">
-                      ${eventTypeLabel}
+                      ${pointTypeLabel}
                     </label>
                     <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${location}" list="destination-list-1">
                     <datalist id="destination-list-1">
@@ -91,6 +97,7 @@ export default class PointEditView extends AbstractView {
     return createPointEditTemplate(this.#tripPoint);
   }
 
+
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;
     this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
@@ -127,33 +134,44 @@ export class TaskEditView extends SmartView {
 
   restoreHandlers = () => {
     this.#setInnerHandlers();
+    this.setRollupClickHandler(this._callback.rollupClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
   }
 
-  setFormSubmitHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-  }
-
   #setInnerHandlers = () => {
-    // this.element.querySelector('.card__date-deadline-toggle')
-    //   .addEventListener('click', this.#dueDateToggleHandler);
-    // this.element.querySelector('.card__repeat-toggle')
-    //   .addEventListener('click', this.#repeatingToggleHandler);
-    // this.element.querySelector('.card__text')
-    //   .addEventListener('input', this.#descriptionInputHandler);
-    //
-    // if (this._data.isRepeating) {
-    //   this.element.querySelector('.card__repeat-days-inner')
-    //     .addEventListener('change', this.#repeatingChangeHandler);
-    // }
-    //
-    // this.element.querySelector('.card__colors-wrap')
-    //   .addEventListener('change', this.#colorChangeHandler);
+
+    //Слушатель для предложений.
+
+    const offers = this.element.querySelectorAll('.event__offer-selector');
+    for (let i = 0; i < offers.length; i++) {
+      offers[i].addEventListener('click', this.#offerToggleHandler);
+    }
+
+
+    this.element.querySelector('.card__date-deadline-toggle')
+      .addEventListener('click', this.#dueDateToggleHandler);
+    this.element.querySelector('.card__repeat-toggle')
+      .addEventListener('click', this.#repeatingToggleHandler);
+    this.element.querySelector('.card__text')
+      .addEventListener('input', this.#descriptionInputHandler);
+
+    if (this._data.isRepeating) {
+      this.element.querySelector('.card__repeat-days-inner')
+        .addEventListener('change', this.#repeatingChangeHandler);
+    }
+
+    this.element.querySelector('.card__colors-wrap')
+      .addEventListener('change', this.#colorChangeHandler);
 
     this.element.querySelector('.card__date-deadline-toggle')
       .addEventListener('click', this.#dueDateToggleHandler);
   }
+
+  #offerToggleHandler = (evt) => {
+    evt.target.classList.contains('');
+
+  }
+
 
   #dueDateToggleHandler = (evt) => {
     evt.preventDefault();
@@ -196,10 +214,28 @@ export class TaskEditView extends SmartView {
     });
   }
 
+
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit(TaskEditView.parseDataToTask(this._data));
   }
+
+  setRollupClickHandler = (callback) => {
+    this._callback.rollupClick = callback;
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
+  }
+
+  #rollupClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.rollupClick();
+  }
+
+  //WHAT IS IT
 
   static parseTaskToData = (task) => ({...task,
     isDueDate: task.dueDate !== null,

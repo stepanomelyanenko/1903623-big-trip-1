@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import {locations} from './locations';
+import {destinations} from './destinations';
 import {nanoid} from 'nanoid';
 
 const getRandomInteger = (a = 0, b = 1) => {
@@ -28,7 +28,7 @@ const generatePointType = () => {
 };
 
 const generateLocation = () => {
-  const cities = locations();
+  const cities = destinations();
 
   const randomIndex = getRandomInteger(0, cities.length - 1);
 

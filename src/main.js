@@ -1,11 +1,11 @@
 import {render, RenderPosition} from './utils/render.js';
 import TripTabsView from './view/trip-tabs-view.js';
 import TripFiltersView from './view/trip-filters-view.js';
-import {generateTripPoint} from './mock/trip-point';
 import TripPresenter from './presenter/trip-presenter';
+import {generatePoint} from './mock/point';
 
 const TRIP_POINTS_COUNT = 10;
-const tripPoints = Array.from({length: TRIP_POINTS_COUNT}, generateTripPoint);
+const tripPoints = Array.from({length: TRIP_POINTS_COUNT}, generatePoint);
 console.log(tripPoints);
 const pageMainElement = document.querySelector('.page-body');
 
