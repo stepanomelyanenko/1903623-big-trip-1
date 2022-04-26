@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
+import {offers} from '../mock/offers';
 
 const createPointTemplate = (point) => {
   const {base_price: price, date_from: ISOFrom, date_to: ISOTo, destination, is_favorite: isFavorite, type} = point;
@@ -50,20 +51,28 @@ const createPointTemplate = (point) => {
 
   const isFavoriteClass = isFavorite ? ' event__favorite-btn--active' : '';
 
-  const OffersMarkup = null; // ИСПРАВИТЬ!!!
-  // const createOfferMarkup = (offer) => {
-  //   if (offer.isChosen) {
-  //     const offerName = offer.name;
-  //     const offerPrice = offer.price;
-  //     return `<li class="event__offer">
-  //                   <span class="event__offer-title">${offerName}</span>
-  //                   &plus;&euro;&nbsp;
-  //                   <span class="event__offer-price">${offerPrice}</span>
-  //                 </li>`;
-  //   }
-  // };
-  //
-  // const OffersMarkup = offers.map(createOfferMarkup).join('');
+  // ИСПРАВИТЬ, ЧТОБЫ НЕ ОТРИСОВЫВАЛ, НЕВЫБРАННЫЕ ПРЕДЛОЖЕНИЯ!!!
+  const CreateOffers = (pointType, offersByTypes) => {
+
+    const createOfferMarkup = (offer) => `<li class="event__offer">
+                    <span class="event__offer-title">${offer.title}</span>
+                    &plus;&euro;&nbsp;
+                    <span class="event__offer-price">${offer.price}</span>
+                  </li>`;
+
+    let offersByCurrentType = [];
+
+    for (let i = 0; i < offersByTypes.length; i++) {
+      if (offersByTypes[i].type === pointType) {
+        offersByCurrentType = offersByTypes[i].offers;
+      }
+    }
+
+    return offersByCurrentType.map(createOfferMarkup).join('');
+  };
+
+
+  const OffersMarkup = CreateOffers(type, offers());
 
   return `<li class="trip-events__item">
               <div class="event">

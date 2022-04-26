@@ -1,22 +1,39 @@
-export const createOffersSectionMarkup = (editedOffers) => {
-  const createOfferMarkup = (offer) => {
-    const offerName = offer.name;
-    const offerPrice = offer.price;
-    const offerType = offer.type;
+export const createPointTypesMarkup = (offers, chosenPointType) => {
+  const createTypeMarkup = (offer) => {
 
-    return `<div class="event__available-offers">
+    const isChecked = offer.type === chosenPointType ? 'checked=""' : '';
+    const label = offer.type.charAt(0).toUpperCase() + offer.type.slice(1);
+
+    return `<div class="event__type-item">
+                          <input id="event-type-${offer.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${offer.type}" ${isChecked}>
+                          <label class="event__type-label  event__type-label--${offer.type}" for="event-type-${offer.type}-1">${label}</label>
+                        </div>`;
+  };
+
+  return offers.map(createTypeMarkup).join('');
+};
+
+export const createOffersSectionMarkup = (offersByTypes, pointType) => {
+  const createOfferMarkup = (offer) => `<div class="event__available-offers">
                       <div class="event__offer-selector">
-                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${offerType}-1" type="checkbox" name="event-offer-${offerType}" >
+                        <input class="event__offer-checkbox  visually-hidden" id="event-offer-${pointType}-1" type="checkbox" name="event-offer-${pointType}">
                         <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${offerName}</span>
+                          <span class="event__offer-title">${offer.title}</span>
                           &plus;&euro;&nbsp;
-                          <span class="event__offer-price">${offerPrice}</span>
+                          <span class="event__offer-price">${offer.price}</span>
                         </label>
                       </div>`;
-  };
-  const offersMarkup = editedOffers.map(createOfferMarkup).join('');
 
-  if (editedOffers.length !== 0){
+  let offersByCurrentType = [];
+
+  for (let i = 0; i < offersByTypes.length; i++) {
+    if (offersByTypes[i].type === pointType) {
+      offersByCurrentType = offersByTypes[i].offers;
+    }
+  }
+  const offersMarkup = offersByCurrentType.map(createOfferMarkup).join('');
+
+  if (offersByCurrentType.length !== 0){
     return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
                     ${offersMarkup}</section>`;
@@ -24,17 +41,13 @@ export const createOffersSectionMarkup = (editedOffers) => {
   return '';
 };
 
-export const createEventTypesMarkup = (types, chosenEventType) => {
-  const createTypeMarkup = (type) => {
-    const isChecked = type === chosenEventType ? 'checked=""' : '';
-    const label = type.charAt(0).toUpperCase() + type.slice(1);
-
-    return `<div class="event__type-item">
-                          <input id="event-type-${type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type}" ${isChecked}>
-                          <label class="event__type-label  event__type-label--${type}" for="event-type-${type}-1">${label}</label>
-                        </div>`;
-  };
-
-  return types.map(createTypeMarkup).join('');
-};
-
+// export const createDestinationOptionMarkup = (destinations, currentDestination) => {
+//   const createOptionMarkup = (destination) => {
+//
+//     const isSelected = destination.name === currentDestination.name ? 'selected' : '';
+//
+//     return `<option value="${destination.name}" ${isSelected}></option>`;
+//   };
+//
+//   return destinations.map(createOptionMarkup).join('');
+// };

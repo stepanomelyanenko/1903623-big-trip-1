@@ -90,7 +90,7 @@ export const destinations = () => ([
     ]
   },
   {
-    'description': 'Yekaterinburg is the largest city and the administrative centre of Sverdlovsk Oblast.',
+    'description': null,
     'name': 'Yekaterinburg',
     'pictures': []
   }

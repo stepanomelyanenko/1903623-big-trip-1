@@ -3,39 +3,39 @@ import {destinations} from '../mock/destinations';
 import {offers} from '../mock/offers';
 import AbstractView from './abstract-view';
 import SmartView from './smart-view';
-import {createEventTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
+import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
 
-const createPointEditTemplate = (tripPoint) => {
-  const {pointType, price, location, startDate, endDate, offers, description, photos} = tripPoint;
+const createPointEditTemplate = (point) => {
 
-  const startDatetime = dayjs(startDate).format('DD/MM/YY HH:mm ');
-  const endDatetime = dayjs(endDate).format('DD/MM/YY HH:mm');
+  const {base_price: price, date_from: ISOFrom, date_to: ISOTo, destination, type} = point;
 
-  //const photosList = photos.map((x) => (`<img className="event__photo" src="${x}">`)).join('');
-  const photosList = null;
-  const locationOptions = destinations().map((x) => (`<option value="${x}"></option>`)).join('');
+  const DatetimeFrom = dayjs(ISOFrom).format('DD/MM/YY HH:mm ');
+  const DatetimeTo = dayjs(ISOTo).format('DD/MM/YY HH:mm');
 
-  //const pointTypeLabel = pointType.charAt(0).toUpperCase() + pointType.slice(1);
-  const pointTypeLabel = null;
+  const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-  const editedOffersMarkup = createOffersSectionMarkup(offers);
+  const pointTypesMarkup = createPointTypesMarkup(offers(), type);
+  const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
 
-  //const eventTypesMarkup = createEventTypesMarkup(offers(), pointType);
-  const eventTypesMarkup = null;
+  const photosMarkup = destination.pictures.map((x) => (`<img className="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
+
+  //НАВЕЩШАТЬ ОБРАБОТЧИК
+  const editedOffersMarkup = createOffersSectionMarkup(offers(), type);
+
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
                 <header class="event__header">
                   <div class="event__type-wrapper">
                     <label class="event__type  event__type-btn" for="event-type-toggle-1">
                       <span class="visually-hidden">Choose event type</span>
-                      <img class="event__type-icon" width="17" height="17" src="img/icons/${pointType}.png" alt="Event type icon">
+                      <img class="event__type-icon" width="17" height="17" src="img/icons/${type}.png" alt="Event type icon">
                     </label>
                     <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
                     <div class="event__type-list">
                       <fieldset class="event__type-group">
                         <legend class="visually-hidden">Event type</legend>
-                        ${eventTypesMarkup}
+                        ${pointTypesMarkup}
                       </fieldset>
                     </div>
                   </div>
@@ -44,18 +44,18 @@ const createPointEditTemplate = (tripPoint) => {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${pointTypeLabel}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${location}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name}" list="destination-list-1">
                     <datalist id="destination-list-1">
-                      ${locationOptions}
+                      ${destinationOptions}
                     </datalist>
                   </div>
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${startDatetime}">
+                    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${DatetimeFrom}">
                     —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${endDatetime}">
+                    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${DatetimeTo}">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -72,12 +72,14 @@ const createPointEditTemplate = (tripPoint) => {
                     <span class="visually-hidden">Open event</span>
                   </button>
                 </header>
-                <section class="event__details">${editedOffersMarkup}<section class="event__section  event__section--destination">
-                    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-                    <p class="event__destination-description">${description}</p>
+                <section class="event__details">
+                  ${editedOffersMarkup}
+                  <section class="event__section  event__section--destination">
+                    ${destination.description ? '<h3 class="event__section-title  event__section-title--destination">Destination</h3>': ''}
+                    <p class="event__destination-description">${destination.description ? destination.description : ''}</p>
                     <div class="event__photos-container">
                       <div class="event__photos-tape">
-                        ${photosList}
+                        ${photosMarkup}
                       </div>
                     </div>
                   </section>
@@ -143,9 +145,9 @@ export class TaskEditView extends SmartView {
 
     //Слушатель для предложений.
 
-    const offers = this.element.querySelectorAll('.event__offer-selector');
+    const offers1 = this.element.querySelectorAll('.event__offer-selector');
     for (let i = 0; i < offers.length; i++) {
-      offers[i].addEventListener('click', this.#offerToggleHandler);
+      offers1[i].addEventListener('click', this.#offerToggleHandler);
     }
 
 
