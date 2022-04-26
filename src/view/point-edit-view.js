@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import {destinations} from '../mock/destinations';
 import {offers} from '../mock/offers';
-import AbstractView from './abstract-view';
 import SmartView from './smart-view';
 import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
 
@@ -19,7 +18,6 @@ const createPointEditTemplate = (point) => {
 
   const photosMarkup = destination.pictures.map((x) => (`<img className="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
 
-  //НАВЕЩШАТЬ ОБРАБОТЧИК
   const editedOffersMarkup = createOffersSectionMarkup(offers(), type);
 
   return `<li class="trip-events__item">
@@ -101,6 +99,12 @@ export default class PointEditView extends SmartView {
     return createPointEditTemplate(this._data);
   }
 
+  reset = (point) => {
+    this.updateData(
+      PointEditView.parsePointToData(point),
+    );
+  }
+
   restoreHandlers = () => {
     this.#setInnerHandlers();
     this.setRollupClickHandler(this._callback.rollupClick);
@@ -122,7 +126,6 @@ export default class PointEditView extends SmartView {
 
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
-    
     this.updateData({
       type: evt.target.value
     }, false);
@@ -140,7 +143,6 @@ export default class PointEditView extends SmartView {
     this.updateData({
       date_from: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
     }, true);
-    console.log(evt.target.value);
   }
 
   #endTimeChangeHandler = (evt) => {
@@ -148,7 +150,6 @@ export default class PointEditView extends SmartView {
     this.updateData({
       date_to: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
     }, true);
-    console.log(evt.target.value);
   }
 
   #basePriceChangeHandler = (evt) => {
@@ -156,10 +157,8 @@ export default class PointEditView extends SmartView {
     this.updateData({
       base_price: evt.target.value
     }, true);
-    console.log(evt.target.value);
   }
 
-  //тут все хорошо
   setRollupClickHandler = (callback) => {
     this._callback.rollupClick = callback;
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
@@ -179,14 +178,21 @@ export default class PointEditView extends SmartView {
     evt.preventDefault();
     this._callback.formSubmit();
     this._callback.formSubmit(this._data);
+    console.log(PointEditView.parseDataToPoint(this._data));
+    this._callback.formSubmit(PointEditView.parseDataToPoint(this._data));
   }
 
-  static parsePointToData = (task) => ({...task,
-    // isDueDate: task.dueDate !== null,
-    // isRepeating: isTaskRepeating(task.repeating),
+  static parsePointToData = (point) => ({...point,
+    // В будущем здесь появится обработка Предложений (Offers).
   });
 
-  //тут вспомогательные штуки
+  static parseDataToPoint = (data) => {
+    const point = {...data};
+    // В будущем здесь появится обработка Предложений (Offers).
+
+    return point;
+  }
+
   #getChangedDestination = (destinationName) => {
     const allDestinations = destinations();
 
@@ -202,142 +208,5 @@ export default class PointEditView extends SmartView {
       'pictures': []
     };
   };
-}
-
-export class TaskEditView extends SmartView {
-  constructor(tripPoint) {
-    super();
-    this._data = TaskEditView.parseTaskToData(tripPoint);
-
-    this.#setInnerHandlers();
-  }
-
-  get template() {
-    return createPointEditTemplate(this._data);
-  }
-
-  restoreHandlers = () => {
-    this.#setInnerHandlers();
-    this.setRollupClickHandler(this._callback.rollupClick);
-    this.setFormSubmitHandler(this._callback.formSubmit);
-  }
-
-  #setInnerHandlers = () => {
-
-    //Слушатель для предложений.
-
-    this.element.querySelector('.card__date-deadline-toggle')
-      .addEventListener('click', this.#dueDateToggleHandler);
-    this.element.querySelector('.card__repeat-toggle')
-      .addEventListener('click', this.#repeatingToggleHandler);
-    this.element.querySelector('.card__text')
-      .addEventListener('input', this.#descriptionInputHandler);
-
-    if (this._data.isRepeating) {
-      this.element.querySelector('.card__repeat-days-inner')
-        .addEventListener('change', this.#repeatingChangeHandler);
-    }
-
-    this.element.querySelector('.card__colors-wrap')
-      .addEventListener('change', this.#colorChangeHandler);
-
-    this.element.querySelector('.card__date-deadline-toggle')
-      .addEventListener('click', this.#dueDateToggleHandler);
-  }
-
-
-  #dueDateToggleHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      isDueDate: !this._data.isDueDate,
-      // Логика следующая: если выбор даты нужно показать,
-      // то есть когда "!this._data.isDueDate === true",
-      // тогда isRepeating должно быть строго false.
-      isRepeating: !this._data.isDueDate ? false : this._data.isRepeating,
-    });
-  }
-
-  #repeatingToggleHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      isRepeating: !this._data.isRepeating,
-      // Аналогично, но наоборот, для повторения
-      isDueDate: !this._data.isRepeating ? false : this._data.isDueDate,
-    });
-  }
-
-  #descriptionInputHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      description: evt.target.value,
-    }, true);
-  }
-
-  #repeatingChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      repeating: {...this._data.repeating, [evt.target.value]: evt.target.checked},
-    });
-  }
-
-  #colorChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      color: evt.target.value,
-    });
-  }
-
-
-  setFormSubmitHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-  }
-
-  #formSubmitHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.formSubmit(TaskEditView.parseDataToTask(this._data));
-  }
-
-  setRollupClickHandler = (callback) => {
-    this._callback.rollupClick = callback;
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
-  }
-
-  #rollupClickHandler = (evt) => {
-    evt.preventDefault();
-    this._callback.rollupClick();
-  }
-
-  //WHAT IS IT
-
-  static parseTaskToData = (task) => ({...task,
-    isDueDate: task.dueDate !== null,
-    isRepeating: isTaskRepeating(task.repeating),
-  });
-
-  static parseDataToTask = (data) => {
-    const task = {...data};
-
-    if (!task.isDueDate) {
-      task.dueDate = null;
-    }
-
-    if (!task.isRepeating) {
-      task.repeating = {
-        mo: false,
-        tu: false,
-        we: false,
-        th: false,
-        fr: false,
-        sa: false,
-        su: false,
-      };
-    }
-
-    delete task.isDueDate;
-    delete task.isRepeating;
-
-    return task;
-  }
 }
 

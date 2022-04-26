@@ -41,13 +41,3 @@ export const createOffersSectionMarkup = (offersByTypes, pointType) => {
   return '';
 };
 
-// export const createDestinationOptionMarkup = (destinations, currentDestination) => {
-//   const createOptionMarkup = (destination) => {
-//
-//     const isSelected = destination.name === currentDestination.name ? 'selected' : '';
-//
-//     return `<option value="${destination.name}" ${isSelected}></option>`;
-//   };
-//
-//   return destinations.map(createOptionMarkup).join('');
-// };

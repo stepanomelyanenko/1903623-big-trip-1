@@ -29,35 +29,10 @@ const generateFromToDates = () => {
   };
 };
 
-// const countDuration = (start, end) => {
-//   const interval = new Date(end - start);
-//
-//   return {
-//     days: interval.getUTCDate() - 1,
-//     hours: interval.getUTCHours(),
-//     minutes: interval.getUTCMinutes(),
-//   };
-// };
-
 export const generatePoint = () => {
   const dates = generateFromToDates();
   const destinationArray = destinations();
   const offerArray = offers();
-
-  // return {
-  //   id: nanoid(),
-  //   pointType: generatePointType(),
-  //   location: generateLocation(),
-  //   startDate: dates.start,
-  //   endDate: dates.end,
-  //   duration: countDuration(dates.start, dates.end),
-  //   description: generateDescription(),
-  //   photos: generatePhotos(),
-  //   price: generatePrice(),
-  //   offers: generateOffers(),
-  //   isFavorite: Boolean(getRandomInteger(0,1)),
-  //   isBeingEdited: false
-  // };
 
   return {
     'base_price': generatePrice(),
