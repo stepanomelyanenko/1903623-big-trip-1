@@ -3,7 +3,7 @@ import AbstractView from './abstract-view';
 import {offers} from '../mock/offers';
 
 const createPointTemplate = (point) => {
-  const {base_price: price, date_from: ISOFrom, date_to: ISOTo, destination, is_favorite: isFavorite, type} = point;
+  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, isFavorite: isFavorite, type} = point;
 
   const destinationName = destination.name;
 

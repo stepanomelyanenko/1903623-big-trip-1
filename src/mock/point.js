@@ -35,14 +35,14 @@ export const generatePoint = () => {
   const offerArray = offers();
 
   return {
-    'base_price': generatePrice(),
-    'date_from': dates.from,
-    'date_to': dates.to,
-    'destination': destinationArray[getRandomInteger(0,destinationArray.length-1)],
-    'id': nanoid(),
-    'is_favorite': Boolean(getRandomInteger(0,1)),
-    'offers': offerArray,
-    'type': offerArray[getRandomInteger(0,offerArray.length-1)].type
+    basePrice: generatePrice(),
+    dateFrom: dates.from,
+    dateTo: dates.to,
+    destination: destinationArray[getRandomInteger(0,destinationArray.length-1)],
+    id: nanoid(),
+    isFavorite: Boolean(getRandomInteger(0,1)),
+    offers: offerArray,
+    type: offerArray[getRandomInteger(0,offerArray.length-1)].type
   };
 };
 

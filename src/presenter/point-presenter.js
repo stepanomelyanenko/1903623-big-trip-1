@@ -99,7 +99,7 @@ export default class PointPresenter {
   }
 
   #handleFavoriteClick = () => {
-    this.#changeData({...this.#tripPoint, is_favorite: !this.#tripPoint.is_favorite});
+    this.#changeData({...this.#tripPoint, isFavorite: !this.#tripPoint.isFavorite});
   }
 
   #handleFormSubmit = (point) => {

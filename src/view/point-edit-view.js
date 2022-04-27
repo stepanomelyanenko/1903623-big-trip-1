@@ -6,7 +6,7 @@ import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/forms'
 
 const createPointEditTemplate = (point) => {
 
-  const {base_price: price, date_from: ISOFrom, date_to: ISOTo, destination, type} = point;
+  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, type} = point;
 
   const DatetimeFrom = dayjs(ISOFrom).format('DD/MM/YY HH:mm ');
   const DatetimeTo = dayjs(ISOTo).format('DD/MM/YY HH:mm');
@@ -141,21 +141,21 @@ export default class PointEditView extends SmartView {
   #startTimeChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      date_from: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
+      dateFrom: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
     }, true);
   }
 
   #endTimeChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      date_to: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
+      dateTo: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
     }, true);
   }
 
   #basePriceChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      base_price: evt.target.value
+      basePrice: evt.target.value
     }, true);
   }
 
@@ -178,7 +178,6 @@ export default class PointEditView extends SmartView {
     evt.preventDefault();
     this._callback.formSubmit();
     this._callback.formSubmit(this._data);
-    console.log(PointEditView.parseDataToPoint(this._data));
     this._callback.formSubmit(PointEditView.parseDataToPoint(this._data));
   }
 

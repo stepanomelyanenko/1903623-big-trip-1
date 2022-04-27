@@ -5,7 +5,7 @@ import TripSortView from '../view/trip-sort-view';
 import PointPresenter from './point-presenter';
 import {updateItem} from '../utils/common';
 import {SortType} from '../utils/const';
-import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point';
+import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point-sort';
 
 export default class TripPresenter {
   #mainElement = null;
