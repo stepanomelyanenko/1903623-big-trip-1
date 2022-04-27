@@ -146,14 +146,12 @@ export default class PointEditView extends SmartView {
   }
 
   #dateFromChangeHandler = ([userDate]) => {
-    console.log(userDate.toISOString());
     this.updateData({
       dateFrom: userDate.toISOString(),
     });
   }
 
   #dateToChangeHandler = ([userDate]) => {
-    console.log(userDate.toISOString());
     this.updateData({
       dateTo: userDate.toISOString(),
     });
