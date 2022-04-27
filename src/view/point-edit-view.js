@@ -3,6 +3,9 @@ import {destinations} from '../mock/destinations';
 import {offers} from '../mock/offers';
 import SmartView from './smart-view';
 import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
+import flatpickr from 'flatpickr';
+
+import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createPointEditTemplate = (point) => {
 
