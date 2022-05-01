@@ -31,6 +31,13 @@ const createTripSortTemplate = () => (
 );
 
 export default class TripSortView extends AbstractView {
+  #currentSortType = null;
+
+  constructor(currentSortType) {
+    super();
+    this.#currentSortType = currentSortType;
+  }
+
   get template() {
     return createTripSortTemplate();
   }
