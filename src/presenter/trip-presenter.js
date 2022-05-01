@@ -11,6 +11,8 @@ export default class TripPresenter {
   #mainElement = null;
   #tripPointsElement = null;
 
+  #pointsModel = null;
+
   #tripSortComponent = new TripSortView();
   #noTripPointsComponent = new NoTripPointsView();
   #tripPointsListElement = new PointsListView();
@@ -21,9 +23,15 @@ export default class TripPresenter {
   #currentSortType = SortType.SORT_DAY;
   #sourcedTripPoints = [];
 
-  constructor(mainElement) {
+  constructor(mainElement, pointsModel) {
     this.#mainElement = mainElement;
     this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
+
+    this.#pointsModel = pointsModel;
+  }
+
+  get tasks() {
+    return this.#pointsModel.points;
   }
 
   init = (tripPoints) => {
