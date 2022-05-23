@@ -59,13 +59,13 @@ export default class TripPresenter {
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
-      case UserAction.UPDATE_TASK:
+      case UserAction.UPDATE_POINT:
         this.#pointsModel.updatePoint(updateType, update);
         break;
-      case UserAction.ADD_TASK:
+      case UserAction.ADD_POINT:
         this.#pointsModel.addPoint(updateType, update);
         break;
-      case UserAction.DELETE_TASK:
+      case UserAction.DELETE_POINT:
         this.#pointsModel.deletePoint(updateType, update);
         break;
     }
@@ -95,7 +95,7 @@ export default class TripPresenter {
 
     this.#currentSortType = sortType;
     this.#clearPointList();
-    this.#renderTripPointsList(this.points);
+    this.#renderTripPoints(this.points);
     this.#clearMain({resetRenderedTaskCount: true});
     this.#renderMain();
   }
@@ -112,7 +112,7 @@ export default class TripPresenter {
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
-  #renderTripPointsList = (points) => {
+  #renderTripPoints = (points) => {
     points.forEach((point) => this.#renderTripPoint(point));
   }
 
@@ -139,7 +139,7 @@ export default class TripPresenter {
 
     this.#renderSort();
     this.#renderTripPointsListElement();
-    this.#renderTripPointsList(points);
+    this.#renderTripPoints(points);
   }
 
   #clearPointList = () => {

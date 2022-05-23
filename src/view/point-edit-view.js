@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import {destinations} from '../mock/destinations';
 import {offers} from '../mock/offers';
 import SmartView from './smart-view';
@@ -9,10 +8,7 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createPointEditTemplate = (point) => {
 
-  const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, type} = point;
-
-  const DatetimeFrom = dayjs(ISOFrom).format('DD/MM/YY HH:mm ');
-  const DatetimeTo = dayjs(ISOTo).format('DD/MM/YY HH:mm');
+  const {basePrice: price, destination, type} = point;
 
   const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
@@ -53,10 +49,10 @@ const createPointEditTemplate = (point) => {
 
                   <div class="event__field-group  event__field-group--time">
                     <label class="visually-hidden" for="event-start-time-1">From</label>
-                    <input class="event__input  event__input--time event__input-start-time" id="event-start-time-1" type="text" name="event-start-time" value="${DatetimeFrom}">
+                    <input class="event__input  event__input--time event__input-start-time" id="event-start-time-1" type="text" name="event-start-time" value="">
                     —
                     <label class="visually-hidden" for="event-end-time-1">To</label>
-                    <input class="event__input  event__input--time event__input-end-time" id="event-end-time-1" type="text" name="event-end-time" value="${DatetimeTo}">
+                    <input class="event__input  event__input--time event__input-end-time" id="event-end-time-1" type="text" name="event-end-time" value="">
                   </div>
 
                   <div class="event__field-group  event__field-group--price">
@@ -162,6 +158,7 @@ export default class PointEditView extends SmartView {
     this.#setDatepicker();
     this.setRollupClickHandler(this._callback.rollupClick);
     this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
   }
 
   #setInnerHandlers = () => {
@@ -169,10 +166,6 @@ export default class PointEditView extends SmartView {
       .addEventListener('change', this.#typeGroupClickHandler);
     this.element.querySelector('.event__input--destination')
       .addEventListener('change', this.#destinationChangeHandler);
-    this.element.querySelector('.event__input-start-time')
-      .addEventListener('change', this.#startTimeChangeHandler);
-    this.element.querySelector('.event__input-end-time')
-      .addEventListener('change', this.#endTimeChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceChangeHandler);
   }
@@ -191,19 +184,6 @@ export default class PointEditView extends SmartView {
     }, false);
   }
 
-  #startTimeChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      dateFrom: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
-    }, true);
-  }
-
-  #endTimeChangeHandler = (evt) => {
-    evt.preventDefault();
-    this.updateData({
-      dateTo: evt.target.value //ИСПРАВИТЬ!!!!!!!!!!!!
-    }, true);
-  }
 
   #basePriceChangeHandler = (evt) => {
     evt.preventDefault();
@@ -229,10 +209,19 @@ export default class PointEditView extends SmartView {
 
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
-    this._callback.formSubmit();
-    this._callback.formSubmit(this._data);
     this._callback.formSubmit(PointEditView.parseDataToPoint(this._data));
   }
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+  }
+
+  #formDeleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this._callback.deleteClick(PointEditView.parseDataToPoint(this._data));
+  }
+
 
   static parsePointToData = (point) => ({...point,
     // В будущем здесь появится обработка Предложений (Offers).
