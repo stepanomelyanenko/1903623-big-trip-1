@@ -8,6 +8,9 @@ import FilterModel from './model/filter-model';
 
 
 const TRIP_POINTS_COUNT = 10;
+
+const filters = ['everything', 'future', 'past'];
+
 const tripPoints = Array.from({length: TRIP_POINTS_COUNT}, generatePoint);
 const pageMainElement = document.querySelector('.page-body');
 
@@ -20,7 +23,7 @@ pointsModel.points = tripPoints;
 const filterModel = new FilterModel();
 
 render(tripControlsNavigationElement, new TripTabsView(), RenderPosition.BEFOREEND);
-render(tripControlsFiltersElement, new TripFiltersView(), RenderPosition.BEFOREEND);
+render(tripControlsFiltersElement, new TripFiltersView(filters, 'everything'), RenderPosition.BEFOREEND);
 
 const tripPresenter = new TripPresenter(pageMainElement, pointsModel);
 tripPresenter.init();
