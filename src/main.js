@@ -6,7 +6,6 @@ import {generatePoint} from './mock/point.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model';
 
-
 const TRIP_POINTS_COUNT = 10;
 
 const tripPoints = Array.from({length: TRIP_POINTS_COUNT}, generatePoint);
@@ -27,5 +26,4 @@ const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterMo
 
 filterPresenter.init();
 tripPresenter.init();
-
 
