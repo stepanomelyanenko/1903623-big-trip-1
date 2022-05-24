@@ -1,7 +1,7 @@
-import {FilterType} from '../const';
+import {FilterType} from './const';
 
 export const filter = {
-  [FilterType.EVERYTHING]: (point) => point.filter(true),
-  [FilterType.FUTURE]: (tasks) => tasks.filter((point) => new Date(point.dateFrom) > new Date()),
-  [FilterType.PAST]: (tasks) => tasks.filter((point) => new Date(point.dateTo) > new Date()),
+  [FilterType.EVERYTHING]: (points) => points.filter((point) => point),
+  [FilterType.FUTURE]: (points) => points.filter((point) => new Date(point.dateFrom) > new Date()),
+  [FilterType.PAST]: (points) => points.filter((point) => new Date(point.dateTo) < new Date()),
 };

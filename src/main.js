@@ -22,7 +22,7 @@ const filterModel = new FilterModel();
 
 render(tripControlsNavigationElement, new TripTabsView(), RenderPosition.BEFOREEND);
 
-const tripPresenter = new TripPresenter(pageMainElement, pointsModel);
+const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel);
 
 filterPresenter.init();

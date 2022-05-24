@@ -3,6 +3,7 @@ import PointsListView from '../view/points-list-view.js';
 import NoTripPointsView from '../view/no-trip-points-view.js';
 import TripSortView from '../view/trip-sort-view.js';
 import PointPresenter from './point-presenter.js';
+import {filter} from '../utils/filter';
 import {SortType, UpdateType, UserAction} from '../utils/const.js';
 import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point-sort.js';
 
@@ -11,6 +12,7 @@ export default class TripPresenter {
   #tripPointsElement = null;
 
   #pointsModel = null;
+  #filterModel = null;
 
   #noTripPointsComponent = new NoTripPointsView();
   #tripPointsListElement = new PointsListView();
@@ -20,25 +22,31 @@ export default class TripPresenter {
 
   #currentSortType = SortType.SORT_DAY;
 
-  constructor(mainElement, pointsModel) {
+  constructor(mainElement, pointsModel, filterModel) {
     this.#mainElement = mainElement;
     this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
 
     this.#pointsModel = pointsModel;
+    this.#filterModel = filterModel;
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
+    const filterType = this.#filterModel.filter;
+    const points = this.#pointsModel.points;
+    const filteredPoints = filter[filterType](points);
+
     switch (this.#currentSortType) {
       case SortType.SORT_DAY:
-        return [...this.#pointsModel.points].sort(sortTaskByDay);
+        return filteredPoints.sort(sortTaskByDay);
       case SortType.SORT_TIME:
-        return [...this.#pointsModel.points].sort(sortTaskByDuration);
+        return filteredPoints.sort(sortTaskByDuration);
       case SortType.SORT_PRICE:
-        return [...this.#pointsModel.points].sort(sortTaskByPrice);
+        return filteredPoints.sort(sortTaskByPrice);
     }
-    return this.#pointsModel.points;
+    return filteredPoints;
   }
 
   init = () => {
