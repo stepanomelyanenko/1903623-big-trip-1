@@ -3,11 +3,12 @@ import {offers} from '../mock/offers';
 import SmartView from './smart-view';
 import {createOffersSectionMarkup, createPointTypesMarkup} from '../utils/forms';
 import flatpickr from 'flatpickr';
+import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createPointAddTemplate = (point) => {
-  const {destination, type} = point;
+  const {basePrice: price, destination, type} = point;
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
   const pointTypesMarkup = createPointTypesMarkup(offers(), type);
@@ -48,7 +49,7 @@ const createPointAddTemplate = (point) => {
                     <label class="event__label  event__type-output" for="event-destination-1">
                       ${pointTypeLabel}
                     </label>
-                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${destination.name ? destination.name : ''}" list="destination-list-1">
+                    <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${he.encode(destination.name ? destination.name : '')}" list="destination-list-1">
                     <datalist id="destination-list-1">
                       ${destinationOptions}
                     </datalist>
@@ -67,7 +68,7 @@ const createPointAddTemplate = (point) => {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(price ? price.toString() : '')}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
