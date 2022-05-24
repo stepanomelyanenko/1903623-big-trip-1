@@ -1,15 +1,13 @@
 import {render, RenderPosition} from './utils/render.js';
 import TripTabsView from './view/trip-tabs-view.js';
-import TripFiltersView from './view/trip-filters-view.js';
 import TripPresenter from './presenter/trip-presenter';
+import FilterPresenter from './presenter/filter-presenter';
 import {generatePoint} from './mock/point.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model';
 
 
 const TRIP_POINTS_COUNT = 10;
-
-const filters = ['everything', 'future', 'past'];
 
 const tripPoints = Array.from({length: TRIP_POINTS_COUNT}, generatePoint);
 const pageMainElement = document.querySelector('.page-body');
@@ -23,8 +21,11 @@ pointsModel.points = tripPoints;
 const filterModel = new FilterModel();
 
 render(tripControlsNavigationElement, new TripTabsView(), RenderPosition.BEFOREEND);
-render(tripControlsFiltersElement, new TripFiltersView(filters, 'everything'), RenderPosition.BEFOREEND);
 
 const tripPresenter = new TripPresenter(pageMainElement, pointsModel);
+const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel);
+
+filterPresenter.init();
 tripPresenter.init();
+
 
