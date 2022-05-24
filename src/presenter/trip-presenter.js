@@ -4,7 +4,7 @@ import NoTripPointsView from '../view/no-trip-points-view.js';
 import TripSortView from '../view/trip-sort-view.js';
 import PointPresenter from './point-presenter.js';
 import {filter} from '../utils/filter';
-import {SortType, UpdateType, UserAction} from '../utils/const.js';
+import {SortType, UpdateType, UserAction, FilterType} from '../utils/const.js';
 import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point-sort.js';
 
 export default class TripPresenter {
@@ -14,13 +14,14 @@ export default class TripPresenter {
   #pointsModel = null;
   #filterModel = null;
 
-  #noTripPointsComponent = new NoTripPointsView();
+  #noTripPointsComponent = null;
   #tripPointsListElement = new PointsListView();
   #sortComponent = null;
 
   #pointPresenter = new Map();
 
   #currentSortType = SortType.SORT_DAY;
+  #filterType = FilterType.EVERYTHING;
 
   constructor(mainElement, pointsModel, filterModel) {
     this.#mainElement = mainElement;
@@ -34,9 +35,9 @@ export default class TripPresenter {
   }
 
   get points() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const points = this.#pointsModel.points;
-    const filteredPoints = filter[filterType](points);
+    const filteredPoints = filter[this.#filterType](points);
 
     switch (this.#currentSortType) {
       case SortType.SORT_DAY:
@@ -54,6 +55,7 @@ export default class TripPresenter {
   }
 
   #renderNoTasks = () => {
+    this.#noTripPointsComponent = new NoTripPointsView(this.#filterType);
     render(this.#tripPointsElement, this.#noTripPointsComponent, RenderPosition.BEFOREEND);
   }
 
@@ -129,10 +131,13 @@ export default class TripPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
-    remove(this.#noTripPointsComponent);
 
     if (resetSortType) {
       this.#currentSortType = SortType.SORT_DAY;
+    }
+
+    if (this.#noTripPointsComponent) {
+      remove(this.#noTripPointsComponent);
     }
   }
 
