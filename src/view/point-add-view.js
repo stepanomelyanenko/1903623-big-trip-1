@@ -158,8 +158,7 @@ export default class PointAddView extends SmartView {
   restoreHandlers = () => {
     this.#setInnerHandlers();
     this.#setDatepicker();
-    //ДРУГИЕ КНОПКИ
-    //this.setRollupClickHandler(this._callback.rollupClick);
+
     this.setFormSubmitHandler(this._callback.formSubmit);
     this.setDeleteClickHandler(this._callback.deleteClick);
   }
@@ -193,16 +192,6 @@ export default class PointAddView extends SmartView {
       basePrice: evt.target.value
     }, true);
   }
-
-  // setRollupClickHandler = (callback) => {
-  //   this._callback.rollupClick = callback;
-  //   this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#rollupClickHandler);
-  // }
-  //
-  // #rollupClickHandler = (evt) => {
-  //   evt.preventDefault();
-  //   this._callback.rollupClick();
-  // }
 
   setFormSubmitHandler = (callback) => {
     this._callback.formSubmit = callback;

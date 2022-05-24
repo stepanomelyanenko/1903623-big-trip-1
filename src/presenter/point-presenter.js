@@ -112,8 +112,6 @@ export default class PointPresenter {
   #handleFormSubmit = (update) => {
     //ПРОРАБОТАТЬ ОФФЕРЫ
     const isMinorUpdate =
-    // Проверяем, поменялись ли в точке данные, которые попадают под фильтрацию,
-    // а значит требуют перерисовки списка - если таких нет, это PATCH-обновление
      !isDatesEqual(this.#tripPoint.dateFrom, update.dateFrom) ||
      !isDatesEqual(this.#tripPoint.dateTo, update.dateTo) ||
      (this.#tripPoint.basePrice !== update.basePrice);
