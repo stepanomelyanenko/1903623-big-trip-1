@@ -1,7 +1,8 @@
+import PointAddView from '../view/point-add-view.js';
 import {nanoid} from 'nanoid';
 import {remove, render, RenderPosition} from '../utils/render.js';
-import {UserAction, UpdateType} from '../utils/const';
-import PointAddView from '../view/point-add-view';
+import {UserAction, UpdateType} from '../utils/const.js';
+
 
 export default class PointNewPresenter {
   #pointListContainer = null;
@@ -38,13 +39,13 @@ export default class PointNewPresenter {
     document.removeEventListener('keydown', this.#escKeyDownHandler);
   }
 
-  #handleFormSubmit = (task) => {
+  #handleFormSubmit = (point) => {
     this.#changeData(
       UserAction.ADD_POINT,
       UpdateType.MINOR,
       // Пока у нас нет сервера, который бы после сохранения
       // выдывал честный id задачи, нам нужно позаботиться об этом самим
-      {id: nanoid(), ...task},
+      {id: nanoid(), ...point},
     );
     this.destroy();
   }
