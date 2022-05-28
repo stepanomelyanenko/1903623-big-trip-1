@@ -57,7 +57,7 @@ export default class TripPresenter {
   }
 
   init = () => {
-    render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+    //render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
 
     this.#renderTable();
   }
@@ -141,7 +141,9 @@ export default class TripPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
-
+    //DANGER
+    remove(this.#pointListComponent);
+    //DANGER
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
@@ -152,6 +154,9 @@ export default class TripPresenter {
   }
 
   #renderTable = () => {
+    //DANGER
+    render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+    //DANGER
     const points = this.points;
     const pointCount = points.length;
     console.log(points.length);
