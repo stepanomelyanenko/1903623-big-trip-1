@@ -37,15 +37,6 @@ let statisticsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
-    // case MenuItem.ADD_NEW_EVENT:
-    //   filterPresenter.destroy();
-    //   filterPresenter.init();
-    //   tripPresenter.destroy();
-    //   tripPresenter.init();
-    //   tripPresenter.createPoint(handlePointNewFormClose);
-    //   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.add('visually-hidden');
-    //   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.add('visually-hidden');
-    //   break;
     case MenuItem.TABLE:
       filterPresenter.init();
       tripPresenter.init();

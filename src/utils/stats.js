@@ -4,7 +4,7 @@ dayjs.extend(duration);
 
 const TYPES = ['TAXI', 'BUS', 'TRAIN', 'SHIP', 'DRIVE', 'FLIGHT', 'CHECK-IN', 'SIGHTSEEING', 'RESTAURANT'];
 
-const countPricesByType = (trips, types) => {
+const countPricesByType = (points, types) => {
   const pricesByTypes = {
     'TAXI': 0,
     'BUS': 0,
@@ -17,16 +17,16 @@ const countPricesByType = (trips, types) => {
     'RESTAURANT': 0,
   };
   for (const type of types) {
-    trips.map((trip) => {
+    points.map((trip) => {
       if (trip.type.toUpperCase() === type) {
-        pricesByTypes[type] += trip.price;
+        pricesByTypes[type] += trip.basePrice;
       }
     });
   }
   return pricesByTypes;
 };
 
-const countTypes = (trips, types) => {
+const countTypes = (points, types) => {
   const countTypesNumber = {
     'TAXI': 0,
     'BUS': 0,
@@ -39,7 +39,7 @@ const countTypes = (trips, types) => {
     'RESTAURANT': 0,
   };
   for (const type of types) {
-    trips.map((trip) => {
+    points.map((trip) => {
       if (trip.type.toUpperCase() === type) {
         countTypesNumber[type] += 1;
       }
@@ -92,7 +92,7 @@ const countTimeSpendInMs = (trips, types) => {
   for (const type of types) {
     trips.map((trip) => {
       if (trip.type.toUpperCase() === type) {
-        countTypesInMs[type] += dayjs(trip.endDate).diff(dayjs(trip.startDate));
+        countTypesInMs[type] += dayjs(trip.dateTo).diff(dayjs(trip.dateFrom));
       }
     });
   }
