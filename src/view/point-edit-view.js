@@ -204,7 +204,7 @@ export default class PointEditView extends SmartView {
   #basePriceChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      basePrice: evt.target.value
+      basePrice: parseInt(evt.target.value, 10)
     }, true);
   }
 

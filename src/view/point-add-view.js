@@ -202,7 +202,7 @@ export default class PointAddView extends SmartView {
   #basePriceChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      basePrice: evt.target.value
+      basePrice: parseInt(evt.target.value, 10)
     }, true);
   }
 
@@ -220,7 +220,7 @@ export default class PointAddView extends SmartView {
     const offerArray = offers();
     const date = new Date();
     return {
-      basePrice: '',
+      basePrice: 0,
       dateFrom: date.toISOString(),
       dateTo: date.toISOString(),
       destination: {
