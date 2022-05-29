@@ -1,22 +1,24 @@
-import {render, RenderPosition, remove} from '../utils/render.js';
-import PointsListView from '../view/points-list-view.js';
-import NoTripPointsView from '../view/no-trip-points-view.js';
 import TripSortView from '../view/trip-sort-view.js';
+import PointListView from '../view/points-list-view.js';
+import NoPointView from '../view/no-trip-points-view.js';
+
 import PointPresenter from './point-presenter.js';
-import PointNewPresenter from './point-new-presenter';
+import PointNewPresenter from './point-new-presenter.js';
+
+import {render, RenderPosition, remove} from '../utils/render.js';
+import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point-sort.js';
 import {filter} from '../utils/filter';
 import {SortType, UpdateType, UserAction, FilterType} from '../utils/const.js';
-import {sortTaskByDay, sortTaskByDuration, sortTaskByPrice} from '../utils/point-sort.js';
 
 export default class TripPresenter {
-  #mainElement = null;
-  #tripPointsElement = null;
+  #mainContainer = null;
+  #tableContainer = null;
 
   #pointsModel = null;
   #filterModel = null;
 
-  #noTripPointsComponent = null;
-  #tripPointsListElement = new PointsListView();
+  #pointListComponent = new PointListView();
+  #noPointComponent = null;
   #sortComponent = null;
 
   #pointPresenter = new Map();
@@ -25,17 +27,14 @@ export default class TripPresenter {
   #currentSortType = SortType.SORT_DAY;
   #filterType = FilterType.EVERYTHING;
 
-  constructor(mainElement, pointsModel, filterModel) {
-    this.#mainElement = mainElement;
-    this.#tripPointsElement = this.#mainElement.querySelector('.trip-events');
+  constructor(mainContainer, pointsModel, filterModel) {
+    this.#mainContainer = mainContainer;
+    this.#tableContainer = this.#mainContainer.querySelector('.trip-events');
 
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
 
-    this.#pointNewPresenter = new PointNewPresenter(this.#tripPointsListElement, this.#handleViewAction);
-
-    this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#pointNewPresenter = new PointNewPresenter(this.#pointListComponent, this.#handleViewAction);
   }
 
   get points() {
@@ -55,22 +54,30 @@ export default class TripPresenter {
   }
 
   init = () => {
-    this.#renderMain();
+    //render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+
+    this.#renderTable();
   }
 
-  createPoint = () => {
-    this.#currentSortType = SortType.SORT_DAY;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#pointNewPresenter.init();
+  destroy = () => {
+    this.#clearTable( true);
+
+    this.#pointsModel.removeObserver(this.#handleModelEvent);
+    this.#filterModel.removeObserver(this.#handleModelEvent);
   }
 
-  #renderNoTasks = () => {
-    this.#noTripPointsComponent = new NoTripPointsView(this.#filterType);
-    render(this.#tripPointsElement, this.#noTripPointsComponent, RenderPosition.BEFOREEND);
-  }
+  createPoint = (callback) => {
+    //ПРОВЕРИТЬ
+    this.#clearTable();
+    this.#renderTable();
+    //ПРОВЕРИТЬ
 
-  #renderTripPointsListElement = () => {
-    render(this.#tripPointsElement, this.#tripPointsListElement, RenderPosition.BEFOREEND);
+    //this.#currentSortType = SortType.SORT_DAY;
+    //this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    this.#pointNewPresenter.init(callback);
   }
 
   #handleModeChange = () => {
@@ -98,16 +105,15 @@ export default class TripPresenter {
         this.#pointPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
-        this.#clearMain();
-        this.#renderMain();
+        this.#clearTable();
+        this.#renderTable();
         break;
       case UpdateType.MAJOR:
-        this.#clearMain({resetRenderedTaskCount: true, resetSortType: true});
-        this.#renderMain();
+        this.#clearTable( true);
+        this.#renderTable();
         break;
     }
   }
-
 
   #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
@@ -115,61 +121,64 @@ export default class TripPresenter {
     }
 
     this.#currentSortType = sortType;
-    this.#clearPointList();
-    this.#renderTripPoints(this.points);
-    this.#clearMain({resetRenderedTaskCount: true});
-    this.#renderMain();
+    this.#clearTable();
+    this.#renderTable();
   }
 
   #renderSort = () => {
     this.#sortComponent = new TripSortView(this.#currentSortType);
     this.#sortComponent.setSortTypeChangeHandler(this.#handleSortTypeChange);
-    render(this.#tripPointsElement, this.#sortComponent, RenderPosition.AFTERBEGIN);
+
+    render(this.#tableContainer, this.#sortComponent, RenderPosition.AFTERBEGIN);
   }
 
-  #renderTripPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#tripPointsListElement, this.#handleViewAction, this.#handleModeChange);
+  #renderPoint = (point) => {
+    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
 
-  #renderTripPoints = (points) => {
-    points.forEach((point) => this.#renderTripPoint(point));
+  #renderPoints = (points) => {
+    points.forEach((point) => this.#renderPoint(point));
   }
 
-  #clearMain = ({resetSortType = false} = {}) => {
+  #renderNoPoints = () => {
+    this.#noPointComponent = new NoPointView(this.#filterType);
+    render(this.#pointListComponent, this.#noPointComponent, RenderPosition.AFTERBEGIN);
+  }
+
+  #clearTable = (resetSortType = false) => {
+    this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
+    //ПРОВЕРИТЬ
+    remove(this.#pointListComponent);
+    //ПРОВЕРИТЬ
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
 
     if (resetSortType) {
       this.#currentSortType = SortType.SORT_DAY;
     }
-
-    if (this.#noTripPointsComponent) {
-      remove(this.#noTripPointsComponent);
-    }
   }
 
-  #renderMain = () => {
+  #renderTable = () => {
+    //ПРОВЕРИТЬ
+    render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+    //ПРОВЕРИТЬ
     const points = this.points;
     const pointCount = points.length;
 
     if (pointCount === 0) {
-      this.#renderNoTasks();
+      this.#renderNoPoints();
       return;
     }
 
     this.#renderSort();
-    this.#renderTripPointsListElement();
-    this.#renderTripPoints(points);
-  }
-
-  #clearPointList = () => {
-    this.#pointNewPresenter.destroy();
-    this.#pointPresenter.forEach((presenter) => presenter.destroy());
-    this.#pointPresenter.clear();
+    this.#renderPoints(points);
   }
 }
 

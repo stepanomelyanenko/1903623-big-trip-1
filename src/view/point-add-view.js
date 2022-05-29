@@ -9,6 +9,7 @@ import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 const createPointAddTemplate = (point) => {
   const {basePrice: price, destination, type} = point;
+
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
   const pointTypesMarkup = createPointTypesMarkup(offers(), type);
@@ -123,6 +124,24 @@ export default class PointAddView extends SmartView {
     );
   }
 
+  restoreHandlers = () => {
+    this.#setInnerHandlers();
+    this.#setDatepicker();
+
+    this.setFormSubmitHandler(this._callback.formSubmit);
+    this.setDeleteClickHandler(this._callback.deleteClick);
+  }
+
+  setFormSubmitHandler = (callback) => {
+    this._callback.formSubmit = callback;
+    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
+  }
+
+  setDeleteClickHandler = (callback) => {
+    this._callback.deleteClick = callback;
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
+  }
+
   #setDatepicker = () => {
     this.#datepickerFrom = flatpickr(
       this.element.querySelector('.event__input-start-time'),
@@ -144,6 +163,15 @@ export default class PointAddView extends SmartView {
     );
   }
 
+  #setInnerHandlers = () => {
+    this.element.querySelector('.event__type-group')
+      .addEventListener('change', this.#typeGroupClickHandler);
+    this.element.querySelector('.event__input--destination')
+      .addEventListener('change', this.#destinationChangeHandler);
+    this.element.querySelector('.event__input--price')
+      .addEventListener('change', this.#basePriceChangeHandler);
+  }
+
   #dateFromChangeHandler = ([userDate]) => {
     this.updateData({
       dateFrom: userDate.toISOString(),
@@ -156,22 +184,6 @@ export default class PointAddView extends SmartView {
     });
   }
 
-  restoreHandlers = () => {
-    this.#setInnerHandlers();
-    this.#setDatepicker();
-
-    this.setFormSubmitHandler(this._callback.formSubmit);
-    this.setDeleteClickHandler(this._callback.deleteClick);
-  }
-
-  #setInnerHandlers = () => {
-    this.element.querySelector('.event__type-group')
-      .addEventListener('change', this.#typeGroupClickHandler);
-    this.element.querySelector('.event__input--destination')
-      .addEventListener('change', this.#destinationChangeHandler);
-    this.element.querySelector('.event__input--price')
-      .addEventListener('change', this.#basePriceChangeHandler);
-  }
 
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
@@ -194,19 +206,9 @@ export default class PointAddView extends SmartView {
     }, true);
   }
 
-  setFormSubmitHandler = (callback) => {
-    this._callback.formSubmit = callback;
-    this.element.querySelector('form').addEventListener('submit', this.#formSubmitHandler);
-  }
-
   #formSubmitHandler = (evt) => {
     evt.preventDefault();
     this._callback.formSubmit(PointAddView.parseDataToPoint(this._data));
-  }
-
-  setDeleteClickHandler = (callback) => {
-    this._callback.deleteClick = callback;
-    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#formDeleteClickHandler);
   }
 
   #formDeleteClickHandler = (evt) => {
@@ -218,7 +220,7 @@ export default class PointAddView extends SmartView {
     const offerArray = offers();
     const date = new Date();
     return {
-      basePrice: null,
+      basePrice: '',
       dateFrom: date.toISOString(),
       dateTo: date.toISOString(),
       destination: {

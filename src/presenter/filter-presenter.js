@@ -1,21 +1,18 @@
-import TripFiltersView from '../view/trip-filters-view';
+import FiltersView from '../view/trip-filters-view.js';
 import {render, RenderPosition, replace, remove} from '../utils/render.js';
-//import {filter} from '../utils/filter.js';
-import {UpdateType} from '../utils/const';
+import {UpdateType, FilterType} from '../utils/const.js';
 
 export default class FilterPresenter {
   #filterContainer = null;
   #filterModel = null;
-  #tasksModel = null;
+  #pointsModel = null;
 
   #filterComponent = null;
 
   constructor(filterContainer, filterModel, tasksModel) {
     this.#filterContainer = filterContainer;
     this.#filterModel = filterModel;
-    this.#tasksModel = tasksModel;
-
-    this.#filterModel.addObserver(this.#handleModelEvent);
+    this.#pointsModel = tasksModel;
   }
 
   get filters() {
@@ -26,8 +23,11 @@ export default class FilterPresenter {
     const filters = this.filters;
     const prevFilterComponent = this.#filterComponent;
 
-    this.#filterComponent = new TripFiltersView(filters, this.#filterModel.filter);
+    this.#filterComponent = new FiltersView(filters, this.#filterModel.filter);
     this.#filterComponent.setFilterTypeChangeHandler(this.#handleFilterTypeChange);
+
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
 
     if (prevFilterComponent === null) {
       render(this.#filterContainer, this.#filterComponent, RenderPosition.BEFOREEND);
@@ -36,6 +36,16 @@ export default class FilterPresenter {
 
     replace(this.#filterComponent, prevFilterComponent);
     remove(prevFilterComponent);
+  }
+
+  destroy = () => {
+    remove(this.#filterComponent);
+    this.#filterComponent = null;
+
+    this.#pointsModel.removeObserver(this.#handleModelEvent);
+    this.#filterModel.removeObserver(this.#handleModelEvent);
+
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
   }
 
   #handleModelEvent = () => {
@@ -50,3 +60,4 @@ export default class FilterPresenter {
     this.#filterModel.setFilter(UpdateType.MAJOR, filterType);
   }
 }
+

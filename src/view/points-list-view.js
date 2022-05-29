@@ -1,10 +1,10 @@
 import AbstractView from './abstract-view';
 
-const createPointsListTemplate = () => ('<ul class="trip-events__list"></ul>');
+const createPointListTemplate = () => ('<ul class="trip-events__list"></ul>');
 
-export default class PointsListView extends AbstractView {
+export default class PointListView extends AbstractView {
   get template() {
-    return createPointsListTemplate();
+    return createPointListTemplate();
   }
 }
 
