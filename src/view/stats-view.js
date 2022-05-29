@@ -168,7 +168,7 @@ const renderTimeChart = (timeCtx, points) => {
       },
       title: {
         display: true,
-        text: 'TIME-SPEND',
+        text: 'TIME',
         fontColor: '#000000',
         fontSize: 23,
         position: 'left',
@@ -269,7 +269,7 @@ export default class StatsView extends SmartView {
     const typeCtx = this.element.querySelector('#type');
     const timeCtx = this.element.querySelector('#time');
 
-    const BAR_WIDTH = 200; //points.length;
+    const BAR_WIDTH = points.length;
     moneyCtx.width = BAR_WIDTH * 5;
     typeCtx.width = BAR_WIDTH * 5;
     timeCtx.width = BAR_WIDTH * 5;

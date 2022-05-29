@@ -27,6 +27,8 @@ render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEN
 const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel);
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
+let mode = 'TABLE';
+
 const handlePointNewFormClose = () => {
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.remove('visually-hidden');
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.remove('visually-hidden');
@@ -38,15 +40,21 @@ let statisticsComponent = null;
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
-      filterPresenter.init();
-      tripPresenter.init();
-      remove(statisticsComponent);
+      if (mode !== 'TABLE') {
+        filterPresenter.init();
+        tripPresenter.init();
+        remove(statisticsComponent);
+        mode = 'TABLE';
+      }
       break;
     case MenuItem.STATS:
-      filterPresenter.destroy();
-      tripPresenter.destroy();
-      statisticsComponent = new StatsView(pointsModel.points);
-      render(pageMainElement, statisticsComponent, RenderPosition.BEFOREEND);
+      if (mode !== 'STATS') {
+        filterPresenter.destroy();
+        tripPresenter.destroy();
+        statisticsComponent = new StatsView(pointsModel.points);
+        render(pageMainElement, statisticsComponent, RenderPosition.BEFOREEND);
+        mode = 'STATS';
+      }
       break;
   }
 };
@@ -66,5 +74,6 @@ document.querySelector('.trip-main__event-add-btn').addEventListener('click', (e
   tripPresenter.createPoint(handlePointNewFormClose);
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.add('visually-hidden');
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.add('visually-hidden');
+  mode = 'TABLE';
 });
 
