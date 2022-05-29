@@ -62,7 +62,7 @@ export default class TripPresenter {
     this.#renderTable();
   }
 
-  createPoint = () => {
+  createPoint = (callback) => {
     //ПРОВЕРИТЬ
     this.#clearTable();
     this.#renderTable();
@@ -70,7 +70,7 @@ export default class TripPresenter {
 
     this.#currentSortType = SortType.SORT_DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#pointNewPresenter.init();
+    this.#pointNewPresenter.init(callback);
   }
 
   #handleModeChange = () => {

@@ -3,7 +3,7 @@ import {MenuItem} from '../utils/const';
 
 const createTripTabsTemplate = () => (
   `<nav class="trip-controls__trip-tabs  trip-tabs">
-                <a class="trip-tabs__btn  trip-tabs__btn--active" href="#" data-menu-item="${MenuItem.TABLE}">Table</a>
+                <a class="trip-tabs__btn" href="#" data-menu-item="${MenuItem.TABLE}">Table</a>
                 <a class="trip-tabs__btn" href="#" data-menu-item="${MenuItem.STATS}">Stats</a>
               </nav>`
 );

@@ -23,7 +23,6 @@ export const FilterType = {
 };
 
 export const MenuItem = {
-  ADD_NEW_EVENT: 'ADD_NEW_EVENT',
   TABLE: 'TABLE',
   STATS: 'STATS',
 };

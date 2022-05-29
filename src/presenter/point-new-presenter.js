@@ -8,13 +8,16 @@ export default class PointNewPresenter {
   #pointListContainer = null;
   #changeData = null;
   #pointAddComponent = null;
+  #destroyCallback = null;
 
   constructor(pointListContainer, changeData) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
   }
 
-  init = () => {
+  init = (callback) => {
+    this.#destroyCallback = callback;
+
     if (this.#pointAddComponent !== null) {
       return;
     }
@@ -33,6 +36,7 @@ export default class PointNewPresenter {
       return;
     }
 
+    this.#destroyCallback?.();
     remove(this.#pointAddComponent);
     this.#pointAddComponent = null;
 
