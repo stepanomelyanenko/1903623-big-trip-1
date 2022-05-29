@@ -220,7 +220,7 @@ export default class PointAddView extends SmartView {
     const offerArray = offers();
     const date = new Date();
     return {
-      basePrice: null,
+      basePrice: '',
       dateFrom: date.toISOString(),
       dateTo: date.toISOString(),
       destination: {

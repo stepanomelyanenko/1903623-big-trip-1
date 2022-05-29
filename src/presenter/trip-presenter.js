@@ -63,6 +63,11 @@ export default class TripPresenter {
   }
 
   createPoint = () => {
+    //ПРОВЕРИТЬ
+    this.#clearTable();
+    this.#renderTable();
+    //ПРОВЕРИТЬ
+
     this.#currentSortType = SortType.SORT_DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#pointNewPresenter.init();
@@ -132,7 +137,7 @@ export default class TripPresenter {
 
   #renderNoPoints = () => {
     this.#noPointComponent = new NoPointView(this.#filterType);
-    render(this.#tableContainer, this.#noPointComponent, RenderPosition.AFTERBEGIN);
+    render(this.#pointListComponent, this.#noPointComponent, RenderPosition.AFTERBEGIN);
   }
 
   #clearTable = ({resetSortType = false} = {}) => {
@@ -141,9 +146,9 @@ export default class TripPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
-    //DANGER
+    //ПРОВЕРИТЬ
     remove(this.#pointListComponent);
-    //DANGER
+    //ПРОВЕРИТЬ
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
@@ -154,12 +159,11 @@ export default class TripPresenter {
   }
 
   #renderTable = () => {
-    //DANGER
+    //ПРОВЕРИТЬ
     render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
-    //DANGER
+    //ПРОВЕРИТЬ
     const points = this.points;
     const pointCount = points.length;
-    console.log(points.length);
 
     if (pointCount === 0) {
       this.#renderNoPoints();
