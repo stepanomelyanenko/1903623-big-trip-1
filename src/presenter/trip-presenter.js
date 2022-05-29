@@ -35,9 +35,6 @@ export default class TripPresenter {
     this.#filterModel = filterModel;
 
     this.#pointNewPresenter = new PointNewPresenter(this.#pointListComponent, this.#handleViewAction);
-
-    this.#pointsModel.addObserver(this.#handleModelEvent);
-    this.#filterModel.addObserver(this.#handleModelEvent);
   }
 
   get points() {
@@ -59,7 +56,17 @@ export default class TripPresenter {
   init = () => {
     //render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
 
+    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+
     this.#renderTable();
+  }
+
+  destroy = () => {
+    this.#clearTable( true);
+
+    this.#pointsModel.removeObserver(this.#handleModelEvent);
+    this.#filterModel.removeObserver(this.#handleModelEvent);
   }
 
   createPoint = (callback) => {
@@ -68,8 +75,8 @@ export default class TripPresenter {
     this.#renderTable();
     //ПРОВЕРИТЬ
 
-    this.#currentSortType = SortType.SORT_DAY;
-    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
+    //this.#currentSortType = SortType.SORT_DAY;
+    //this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#pointNewPresenter.init(callback);
   }
 
@@ -102,7 +109,7 @@ export default class TripPresenter {
         this.#renderTable();
         break;
       case UpdateType.MAJOR:
-        this.#clearTable({resetSortType: true});
+        this.#clearTable( true);
         this.#renderTable();
         break;
     }
@@ -140,7 +147,7 @@ export default class TripPresenter {
     render(this.#pointListComponent, this.#noPointComponent, RenderPosition.AFTERBEGIN);
   }
 
-  #clearTable = ({resetSortType = false} = {}) => {
+  #clearTable = (resetSortType = false) => {
     this.#pointNewPresenter.destroy();
     this.#pointPresenter.forEach((presenter) => presenter.destroy());
     this.#pointPresenter.clear();
