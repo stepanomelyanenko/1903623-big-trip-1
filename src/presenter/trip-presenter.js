@@ -1,5 +1,6 @@
 import TripSortView from '../view/trip-sort-view.js';
 import PointListView from '../view/points-list-view.js';
+import LoadingView from '../view/loading-view.js';
 import NoPointView from '../view/no-trip-points-view.js';
 
 import PointPresenter from './point-presenter.js';
@@ -18,6 +19,7 @@ export default class TripPresenter {
   #filterModel = null;
 
   #pointListComponent = new PointListView();
+  #loadingComponent = new LoadingView();
   #noPointComponent = null;
   #sortComponent = null;
 
@@ -26,6 +28,7 @@ export default class TripPresenter {
 
   #currentSortType = SortType.SORT_DAY;
   #filterType = FilterType.EVERYTHING;
+  #isLoading = true;
 
   constructor(mainContainer, pointsModel, filterModel) {
     this.#mainContainer = mainContainer;
@@ -112,6 +115,11 @@ export default class TripPresenter {
         this.#clearTable( true);
         this.#renderTable();
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderTable();
+        break;
     }
   }
 
@@ -142,6 +150,10 @@ export default class TripPresenter {
     points.forEach((point) => this.#renderPoint(point));
   }
 
+  #renderLoading = () => {
+    render(this.#tableContainer, this.#loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
   #renderNoPoints = () => {
     this.#noPointComponent = new NoPointView(this.#filterType);
     render(this.#pointListComponent, this.#noPointComponent, RenderPosition.AFTERBEGIN);
@@ -153,6 +165,7 @@ export default class TripPresenter {
     this.#pointPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
     //ПРОВЕРИТЬ
     remove(this.#pointListComponent);
     //ПРОВЕРИТЬ
@@ -166,6 +179,10 @@ export default class TripPresenter {
   }
 
   #renderTable = () => {
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
     //ПРОВЕРИТЬ
     render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
     //ПРОВЕРИТЬ
