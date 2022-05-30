@@ -1,6 +1,6 @@
 export const createPointTypesMarkup = (offers, chosenPointType) => {
-  const createTypeMarkup = (offer) => {
 
+  const createTypeMarkup = (offer) => {
     const isChecked = offer.type === chosenPointType ? 'checked=""' : '';
     const label = offer.type.charAt(0).toUpperCase() + offer.type.slice(1);
 

@@ -21,14 +21,17 @@ const tripControlsNavigationElement = document.querySelector('.trip-controls__na
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
 tripControlsFiltersElement.classList.add('visually-hidden');
 
-const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
+const apiService = new ApiService(END_POINT, AUTHORIZATION);
+
+
+const pointsModel = new PointsModel(apiService);
 //pointsModel.points = points;
 
 const filterModel = new FilterModel();
 
 const siteMenuComponent = new TripTabsView();
 
-const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterModel, apiService);
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
 let mode = 'TABLE';

@@ -1,5 +1,5 @@
-import {destinations} from '../mock/destinations';
-import {offers} from '../mock/offers';
+//import {destinations} from '../mock/destinations';
+//import {offers} from '../mock/offers';
 import SmartView from './smart-view';
 import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
 import flatpickr from 'flatpickr';
@@ -7,17 +7,17 @@ import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointEditTemplate = (point) => {
+const createPointEditTemplate = (point, destinations, offers) => {
   const {basePrice: price, destination, type} = point;
 
   const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-  const pointTypesMarkup = createPointTypesMarkup(offers(), type);
-  const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
+  const pointTypesMarkup = createPointTypesMarkup(offers, type);
+  const destinationOptions = destinations.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
 
-  const editedOffersMarkup = createOffersSectionMarkup(offers(), type);
+  const editedOffersMarkup = createOffersSectionMarkup(offers, type);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -89,16 +89,22 @@ export default class PointEditView extends SmartView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor(point) {
+  #destinations = null;
+  #offers = null;
+
+  constructor(point, destinations, offers) {
     super();
     this._data = PointEditView.parsePointToData(point);
+
+    this.#destinations = destinations;
+    this.#offers = offers;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createPointEditTemplate(this._data);
+    return createPointEditTemplate(this._data, this.#destinations, this.#offers);
   }
 
   removeElement = () => {
@@ -197,7 +203,7 @@ export default class PointEditView extends SmartView {
   #destinationChangeHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      destination: this.#getChangedDestination(evt.target.value)
+      destination: this.#getChangedDestination(evt.target.value, this.#destinations)
     }, false);
   }
 
@@ -235,8 +241,8 @@ export default class PointEditView extends SmartView {
     return point;
   }
 
-  #getChangedDestination = (destinationName) => {
-    const allDestinations = destinations();
+  #getChangedDestination = (destinationName, destinations) => {
+    const allDestinations = destinations;
 
     for (let i = 0; i < allDestinations.length; i++) {
       if (allDestinations[i].name === destinationName) {

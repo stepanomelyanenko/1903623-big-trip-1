@@ -12,6 +12,8 @@ import {filter} from '../utils/filter';
 import {SortType, UpdateType, UserAction, FilterType} from '../utils/const.js';
 
 export default class TripPresenter {
+  #apiService = null;
+
   #mainContainer = null;
   #tableContainer = null;
 
@@ -30,12 +32,14 @@ export default class TripPresenter {
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
 
-  constructor(mainContainer, pointsModel, filterModel) {
+  constructor(mainContainer, pointsModel, filterModel, apiService) {
     this.#mainContainer = mainContainer;
     this.#tableContainer = this.#mainContainer.querySelector('.trip-events');
 
     this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
+
+    this.#apiService = apiService;
 
     this.#pointNewPresenter = new PointNewPresenter(this.#pointListComponent, this.#handleViewAction);
   }
@@ -141,7 +145,7 @@ export default class TripPresenter {
   }
 
   #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange);
+    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange, this.#apiService);
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };
