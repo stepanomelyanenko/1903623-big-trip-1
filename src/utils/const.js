@@ -14,6 +14,7 @@ export const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
   MAJOR: 'MAJOR',
+  INIT: 'INIT'
 };
 
 export const FilterType = {
@@ -24,5 +25,5 @@ export const FilterType = {
 
 export const MenuItem = {
   TABLE: 'TABLE',
-  STATS: 'STATS',
+  STATS: 'STATS'
 };
