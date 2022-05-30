@@ -19,6 +19,7 @@ const END_POINT = 'https://16.ecmascript.pages.academy/big-trip';
 const pageMainElement = document.querySelector('.page-body');
 const tripControlsNavigationElement = document.querySelector('.trip-controls__navigation');
 const tripControlsFiltersElement = document.querySelector('.trip-controls__filters');
+tripControlsFiltersElement.classList.add('visually-hidden');
 
 const pointsModel = new PointsModel(new ApiService(END_POINT, AUTHORIZATION));
 //pointsModel.points = points;
@@ -62,12 +63,14 @@ const handleSiteMenuClick = (menuItem) => {
   }
 };
 
-siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
 filterPresenter.init();
 tripPresenter.init();
 
-pointsModel.init();
+pointsModel.init().finally(() => {
+  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+  render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+  tripControlsFiltersElement.classList.remove('visually-hidden');
+});
 
 document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
   evt.preventDefault();
