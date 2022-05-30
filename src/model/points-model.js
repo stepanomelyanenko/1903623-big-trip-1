@@ -7,11 +7,11 @@ export default class PointsModel extends AbstractObservable {
   constructor(apiService) {
     super();
     this.#apiService = apiService;
-
-    this.#apiService.points.then((points) => {
-      console.log('Неадаптированные', points);
-      console.log('Адаптированные', points.map(this.#adaptToClient));
-    });
+    //
+    // this.#apiService.points.then((points) => {
+    //   console.log('Неадаптированные', points);
+    //   console.log('Адаптированные', points.map(this.#adaptToClient));
+    // });
   }
 
   set points(points) {
@@ -20,6 +20,11 @@ export default class PointsModel extends AbstractObservable {
 
   get points() {
     return this.#points;
+  }
+
+  init = async () => {
+    const points = await this.#apiService.points;
+    this.#points = points.map(this.#adaptToClient);
   }
 
   updatePoint = (updateType, update) => {
