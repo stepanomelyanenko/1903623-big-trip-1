@@ -250,9 +250,9 @@ export default class PointEditView extends SmartView {
   static parseDataToPoint = (data) => {
     const point = {...data};
     // В будущем здесь появится обработка Предложений (Offers).
-    delete data.isDisabled;
-    delete data.isSaving;
-    delete data.isDeleting;
+    delete point.isDisabled;
+    delete point.isSaving;
+    delete point.isDeleting;
 
     return point;
   }
