@@ -228,7 +228,7 @@ export default class PointAddView extends SmartView {
         'name': '',
         'pictures': []
       },
-      id: null,
+      //id: null,
       isFavorite: false,
       offers: offerArray,
       type: 'taxi'
