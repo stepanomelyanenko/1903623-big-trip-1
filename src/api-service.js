@@ -30,7 +30,6 @@ export default class ApiService {
   }
 
   updatePoint = async (point) => {
-    console.log(this.#adaptToServer(point));
     const response = await this.#load({
       url: `points/${point.id}`,
       method: Method.PUT,
@@ -44,7 +43,6 @@ export default class ApiService {
   }
 
   addPoint = async (point) => {
-    console.log(this.#adaptToServer(point));
     const response = await this.#load({
       url: 'points',
       method: Method.POST,
@@ -53,7 +51,6 @@ export default class ApiService {
     });
 
     const parsedResponse = await ApiService.parseResponse(response);
-    console.log(parsedResponse);
     return parsedResponse;
   }
 

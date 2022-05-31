@@ -1,4 +1,3 @@
-
 import SmartView from './smart-view';
 import {createPointTypesMarkup} from '../utils/forms';
 import {createOffersSectionMarkup} from '../utils/offers';
