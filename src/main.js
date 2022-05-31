@@ -25,7 +25,7 @@ const apiService = new ApiService(END_POINT, AUTHORIZATION);
 
 
 const pointsModel = new PointsModel(apiService);
-//pointsModel.points = points;
+
 
 const filterModel = new FilterModel();
 
@@ -67,12 +67,13 @@ const handleSiteMenuClick = (menuItem) => {
 };
 
 filterPresenter.init();
-tripPresenter.init();
 
-pointsModel.init().finally(() => {
-  siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
-  render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
-  tripControlsFiltersElement.classList.remove('visually-hidden');
+tripPresenter.init().finally(() => {
+  pointsModel.init().finally(() => {
+    siteMenuComponent.setMenuClickHandler(handleSiteMenuClick);
+    render(tripControlsNavigationElement, siteMenuComponent, RenderPosition.BEFOREEND);
+    tripControlsFiltersElement.classList.remove('visually-hidden');
+  });
 });
 
 document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
@@ -81,10 +82,11 @@ document.querySelector('.trip-main__event-add-btn').addEventListener('click', (e
   filterPresenter.destroy();
   filterPresenter.init();
   tripPresenter.destroy();
-  tripPresenter.init();
-  tripPresenter.createPoint(handlePointNewFormClose);
-  siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.add('visually-hidden');
-  siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.add('visually-hidden');
-  mode = 'TABLE';
+  tripPresenter.init().finally(() => {
+    tripPresenter.createPoint(handlePointNewFormClose);
+    siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.add('visually-hidden');
+    siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.add('visually-hidden');
+    mode = 'TABLE';
+  });
 });
 

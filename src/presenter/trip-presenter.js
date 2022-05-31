@@ -32,6 +32,9 @@ export default class TripPresenter {
   #filterType = FilterType.EVERYTHING;
   #isLoading = true;
 
+  #destinations = null;
+  #offers = null;
+
   constructor(mainContainer, pointsModel, filterModel, apiService) {
     this.#mainContainer = mainContainer;
     this.#tableContainer = this.#mainContainer.querySelector('.trip-events');
@@ -60,8 +63,19 @@ export default class TripPresenter {
     return filteredPoints;
   }
 
-  init = () => {
-    //render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
+  init = async () => {
+    try {
+      this.#destinations = await this.#apiService.destinations;
+    } catch(err) {
+      this.#destinations = [];
+    }
+
+    try {
+      this.#offers = await this.#apiService.offers;
+    } catch(err) {
+      this.#offers = [];
+    }
+    console.log('c1', this.#destinations, this.#offers);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -145,7 +159,13 @@ export default class TripPresenter {
   }
 
   #renderPoint = (point) => {
-    const pointPresenter = new PointPresenter(this.#pointListComponent, this.#handleViewAction, this.#handleModeChange, this.#apiService);
+    const pointPresenter = new PointPresenter(
+      this.#pointListComponent,
+      this.#handleViewAction,
+      this.#handleModeChange,
+      this.#destinations,
+      this.#offers
+    );
     pointPresenter.init(point);
     this.#pointPresenter.set(point.id, pointPresenter);
   };

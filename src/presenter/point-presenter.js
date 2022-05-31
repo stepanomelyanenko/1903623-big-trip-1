@@ -24,30 +24,16 @@ export default class PointPresenter {
   #destinations = null;
   #offers = null;
 
-  constructor(pointListContainer, changeData, changeMode, apiService) {
+  constructor(pointListContainer, changeData, changeMode, destinations, offers) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
-    this.#apiService = apiService;
-    this.#destinations = null;
-    this.#offers = null;
-
+    this.#destinations = destinations;
+    this.#offers = offers;
   }
 
   init = async (point) => {
     this.#point = point;
-
-    try {
-      this.#destinations = await this.#apiService.destinations;
-    } catch(err) {
-      this.#destinations = [];
-    }
-
-    try {
-      this.#offers = await this.#apiService.offers;
-    } catch(err) {
-      this.#offers = [];
-    }
 
     const prevPointComponent = this.#pointComponent;
     const prevPointEditComponent = this.#pointEditComponent;
