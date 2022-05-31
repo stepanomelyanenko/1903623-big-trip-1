@@ -7,13 +7,13 @@ import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointAddTemplate = (point) => {
+const createPointAddTemplate = (point, destinations1, offers1) => {
   const {basePrice: price, destination, type} = point;
 
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
-  const pointTypesMarkup = createPointTypesMarkup(offers(), type);
-  const destinationOptions = destinations().map((x) => (`<option value="${x.name}"></option>`)).join('');
+  const pointTypesMarkup = createPointTypesMarkup(offers1, type);
+  const destinationOptions = destinations1.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const createPhotosMarkup = (dest) => {
     if (dest.pictures.length > 0) {
@@ -26,7 +26,7 @@ const createPointAddTemplate = (point) => {
 
   const photosMarkup = createPhotosMarkup(destination);
 
-  const editedOffersMarkup = createOffersSectionMarkup(offers(), type);
+  const editedOffersMarkup = createOffersSectionMarkup(offers1, type);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -93,16 +93,22 @@ export default class PointAddView extends SmartView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor(point) {
-    super();
-    this._data = PointAddView.createEmptyPoint(point);
+  #destinations = null;
+  #offers = null;
 
+  constructor(destinations1, offers1) {
+    super();
+    this._data = PointAddView.createEmptyPoint();
+
+    this.#destinations = destinations1;
+    this.#offers = offers1;
+    console.log('dd3', this.#destinations, this.#offers);
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createPointAddTemplate(this._data);
+    return createPointAddTemplate(this._data, this.#destinations, this.#offers);
   }
 
   removeElement = () => {

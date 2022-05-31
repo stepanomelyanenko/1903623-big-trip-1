@@ -32,7 +32,7 @@ export default class PointPresenter {
     this.#offers = offers;
   }
 
-  init = async (point) => {
+  init = (point) => {
     this.#point = point;
 
     const prevPointComponent = this.#pointComponent;

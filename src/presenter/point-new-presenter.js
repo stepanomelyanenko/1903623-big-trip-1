@@ -9,19 +9,26 @@ export default class PointNewPresenter {
   #pointAddComponent = null;
   #destroyCallback = null;
 
+  #destinations = null;
+  #offers = null;
+
   constructor(pointListContainer, changeData) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
   }
 
-  init = (callback) => {
+  init = (callback, destinations, offers) => {
     this.#destroyCallback = callback;
 
     if (this.#pointAddComponent !== null) {
       return;
     }
 
-    this.#pointAddComponent = new PointAddView();
+    this.#destinations = destinations;
+    this.#offers = offers;
+    console.log('d3', this.#destinations, this.#offers);
+
+    this.#pointAddComponent = new PointAddView(this.#destinations, this.#offers);
     this.#pointAddComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointAddComponent.setDeleteClickHandler(this.#handleDeleteClick);
 

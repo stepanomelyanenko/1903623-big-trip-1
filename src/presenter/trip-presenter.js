@@ -98,7 +98,7 @@ export default class TripPresenter {
 
     //this.#currentSortType = SortType.SORT_DAY;
     //this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
-    this.#pointNewPresenter.init(callback);
+    this.#pointNewPresenter.init(callback, this.#destinations, this.#offers);
   }
 
   #handleModeChange = () => {
