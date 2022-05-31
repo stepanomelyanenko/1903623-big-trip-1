@@ -1,14 +1,15 @@
 import SmartView from './smart-view';
-import {createOffersSectionMarkup, createPointTypesMarkup} from '../utils/forms';
+import {createPointTypesMarkup} from '../utils/forms';
+import {createOffersSectionMarkup} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
+
 const createPointAddTemplate = (point, destinations, offers) => {
   const {basePrice: price, destination, type, isDisabled, isSaving} = point;
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
-
   const pointTypesMarkup = createPointTypesMarkup(offers, type);
   const destinationOptions = destinations.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
@@ -226,9 +227,20 @@ export default class PointAddView extends SmartView {
     this._callback.deleteClick(PointAddView.parseDataToPoint(this._data));
   }
 
-  static createEmptyPoint = (offers1) => {
-    const offerArray = offers1;
+  static createEmptyPoint = (allOffers) => {
+    let currentOffers = [];
+    for (let i = 0; i < allOffers.length; i++) {
+      if (allOffers[i].type === 'taxi') {
+        currentOffers = allOffers[i].offers;
+      }
+    }
+
+    for (let i = 0; i < currentOffers.length; i++) {
+      currentOffers[i].isChosen = false;
+    }
+
     const date = new Date();
+
     return {
       basePrice: 0,
       dateFrom: date.toISOString(),
@@ -238,9 +250,8 @@ export default class PointAddView extends SmartView {
         'name': '',
         'pictures': []
       },
-      //id: null,
       isFavorite: false,
-      offers: offerArray,
+      offers: currentOffers,
       type: 'taxi',
 
       isDisabled: false,

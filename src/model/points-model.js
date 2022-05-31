@@ -1,5 +1,6 @@
 import AbstractObservable from '../utils/abstract-observable.js';
 import {UpdateType} from '../utils/const.js';
+import {getCurrentOffers} from '../utils/offers';
 
 export default class PointsModel extends AbstractObservable {
   #apiService = null;
@@ -80,12 +81,24 @@ export default class PointsModel extends AbstractObservable {
     }
   }
 
+  #getCompletedOffers = (offers) => {
+    const completedOffers = offers;
+    for (let i = 0; i < completedOffers.length; i++) {
+      if (typeof completedOffers[i].isChosen === 'undefined') {
+        completedOffers[i].isChosen = false;
+      }
+    }
+
+    return completedOffers;
+  }
+
   #adaptToClient = (point) => {
     const adaptedPoint = {...point,
       basePrice: point['base_price'],
       dateFrom: point['date_from'],
       dateTo: point['date_to'],
       isFavorite: point['is_favorite'],
+      offers: this.#getCompletedOffers(point['offers'])
     };
 
     delete adaptedPoint['base_price'];

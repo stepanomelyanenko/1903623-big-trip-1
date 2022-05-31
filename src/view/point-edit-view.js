@@ -1,7 +1,7 @@
-//import {destinations} from '../mock/destinations';
-//import {offers} from '../mock/offers';
+
 import SmartView from './smart-view';
-import {createPointTypesMarkup, createOffersSectionMarkup} from '../utils/forms';
+import {createPointTypesMarkup} from '../utils/forms';
+import {createOffersSectionMarkup} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 

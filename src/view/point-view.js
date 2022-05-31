@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import AbstractView from './abstract-view';
 import {offers} from '../mock/offers';
+import {getChangedByTypeOffers} from "../utils/offers";
 
 const createPointTemplate = (point) => {
   const {basePrice: price, dateFrom: ISOFrom, dateTo: ISOTo, destination, isFavorite: isFavorite, type} = point;
@@ -54,20 +55,13 @@ const createPointTemplate = (point) => {
   // ИСПРАВИТЬ, ЧТОБЫ НЕ ОТРИСОВЫВАЛ, НЕВЫБРАННЫЕ ПРЕДЛОЖЕНИЯ!!!
   const CreateOffers = (pointType, offersByTypes) => {
 
-    const createOfferMarkup = (offer) => `<li class="event__offer">
+    const createOfferMarkup = (offer) => (offer.isChosen ? `<li class="event__offer">
                     <span class="event__offer-title">${offer.title}</span>
                     &plus;&euro;&nbsp;
                     <span class="event__offer-price">${offer.price}</span>
-                  </li>`;
+                  </li>` : '');
 
-    let offersByCurrentType = [];
-
-    for (let i = 0; i < offersByTypes.length; i++) {
-      if (offersByTypes[i].type === pointType) {
-        offersByCurrentType = offersByTypes[i].offers;
-      }
-    }
-
+    const offersByCurrentType = getChangedByTypeOffers(offersByTypes, pointType);
     return offersByCurrentType.map(createOfferMarkup).join('');
   };
 

@@ -26,7 +26,6 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  #apiService = null;
   #destinations = null;
   #offers = null;
 
