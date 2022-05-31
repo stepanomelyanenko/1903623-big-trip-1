@@ -75,7 +75,6 @@ export default class TripPresenter {
     } catch(err) {
       this.#offers = [];
     }
-    console.log('c1', this.#destinations, this.#offers);
 
     this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);

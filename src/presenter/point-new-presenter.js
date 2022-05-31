@@ -26,7 +26,6 @@ export default class PointNewPresenter {
 
     this.#destinations = destinations;
     this.#offers = offers;
-    console.log('d3', this.#destinations, this.#offers);
 
     this.#pointAddComponent = new PointAddView(this.#destinations, this.#offers);
     this.#pointAddComponent.setFormSubmitHandler(this.#handleFormSubmit);

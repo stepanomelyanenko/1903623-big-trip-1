@@ -1,5 +1,3 @@
-import {destinations} from '../mock/destinations';
-import {offers} from '../mock/offers';
 import SmartView from './smart-view';
 import {createOffersSectionMarkup, createPointTypesMarkup} from '../utils/forms';
 import flatpickr from 'flatpickr';
@@ -7,13 +5,12 @@ import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointAddTemplate = (point, destinations1, offers1) => {
+const createPointAddTemplate = (point, destinations, offers) => {
   const {basePrice: price, destination, type} = point;
-
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
 
-  const pointTypesMarkup = createPointTypesMarkup(offers1, type);
-  const destinationOptions = destinations1.map((x) => (`<option value="${x.name}"></option>`)).join('');
+  const pointTypesMarkup = createPointTypesMarkup(offers, type);
+  const destinationOptions = destinations.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const createPhotosMarkup = (dest) => {
     if (dest.pictures.length > 0) {
@@ -26,7 +23,7 @@ const createPointAddTemplate = (point, destinations1, offers1) => {
 
   const photosMarkup = createPhotosMarkup(destination);
 
-  const editedOffersMarkup = createOffersSectionMarkup(offers1, type);
+  const editedOffersMarkup = createOffersSectionMarkup(offers, type);
 
   return `<li class="trip-events__item">
               <form class="event event--edit" action="#" method="post">
@@ -69,7 +66,7 @@ const createPointAddTemplate = (point, destinations1, offers1) => {
                       <span class="visually-hidden">Price</span>
                       &euro;
                     </label>
-                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(price ? price.toString() : '')}">
+                    <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${he.encode(price.toString() ? price.toString() : '')}">
                   </div>
 
                   <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -96,13 +93,12 @@ export default class PointAddView extends SmartView {
   #destinations = null;
   #offers = null;
 
-  constructor(destinations1, offers1) {
+  constructor(destinations, offers) {
     super();
-    this._data = PointAddView.createEmptyPoint();
+    this._data = PointAddView.createEmptyPoint(offers);
 
-    this.#destinations = destinations1;
-    this.#offers = offers1;
-    console.log('dd3', this.#destinations, this.#offers);
+    this.#destinations = destinations;
+    this.#offers = offers;
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
@@ -222,8 +218,8 @@ export default class PointAddView extends SmartView {
     this._callback.deleteClick(PointAddView.parseDataToPoint(this._data));
   }
 
-  static createEmptyPoint = () => {
-    const offerArray = offers();
+  static createEmptyPoint = (offers1) => {
+    const offerArray = offers1;
     const date = new Date();
     return {
       basePrice: 0,
@@ -253,7 +249,7 @@ export default class PointAddView extends SmartView {
   }
 
   #getChangedDestination = (destinationName) => {
-    const allDestinations = destinations();
+    const allDestinations = this.#destinations;
 
     for (let i = 0; i < allDestinations.length; i++) {
       if (allDestinations[i].name === destinationName) {
