@@ -37,9 +37,7 @@ export default class ApiService {
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   addPoint = async (point) => {
@@ -50,8 +48,7 @@ export default class ApiService {
       headers: new Headers({'Content-Type': 'application/json'}),
     });
 
-    const parsedResponse = await ApiService.parseResponse(response);
-    return parsedResponse;
+    return await ApiService.parseResponse(response);
   }
 
   deletePoint = async (point) => {
@@ -96,7 +93,7 @@ export default class ApiService {
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;
     delete adaptedPoint.isFavorite;
-    console.log(adaptedPoint);
+
     return adaptedPoint;
   }
 
@@ -112,3 +109,4 @@ export default class ApiService {
     throw err;
   }
 }
+

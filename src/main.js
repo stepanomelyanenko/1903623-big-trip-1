@@ -1,8 +1,8 @@
 import TripTabsView from './view/trip-tabs-view.js';
 import StatsView from './view/stats-view.js';
 import {render, RenderPosition, remove} from './utils/render.js';
-import TripPresenter from './presenter/trip-presenter';
-import FilterPresenter from './presenter/filter-presenter';
+import TripPresenter from './presenter/trip-presenter.js';
+import FilterPresenter from './presenter/filter-presenter.js';
 import PointsModel from './model/points-model.js';
 import FilterModel from './model/filter-model.js';
 import {MenuItem} from './utils/const.js';
@@ -27,23 +27,22 @@ const tripPresenter = new TripPresenter(pageMainElement, pointsModel, filterMode
 const filterPresenter = new FilterPresenter(tripControlsFiltersElement, filterModel, pointsModel);
 
 let mode = 'TABLE';
+let statisticsComponent = null;
 
 const handlePointNewFormClose = () => {
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.TABLE}]`).classList.remove('visually-hidden');
   siteMenuComponent.element.querySelector(`[data-menu-item=${MenuItem.STATS}]`).classList.remove('visually-hidden');
-  //siteMenuComponent.setMenuItem(MenuItem.TASKS);
 };
-
-let statisticsComponent = null;
 
 const handleSiteMenuClick = (menuItem) => {
   switch (menuItem) {
     case MenuItem.TABLE:
       if (mode !== 'TABLE') {
         filterPresenter.init();
-        tripPresenter.init();
-        remove(statisticsComponent);
-        mode = 'TABLE';
+        tripPresenter.init().finally(() => {
+          remove(statisticsComponent);
+          mode = 'TABLE';
+        });
       }
       break;
     case MenuItem.STATS:
