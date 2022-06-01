@@ -14,7 +14,7 @@ export const getChangedByTypeOffers = (allOffers, currentType) => {
   return offersByType.offers;
 };
 
-export const createOffersSectionMarkup = (allOffers, pointType) => {
+export const createOffersSectionMarkup = (offers, pointType) => {
   const createOfferMarkup = (offer) => `<div class="event__available-offers">
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${pointType}-1"
@@ -27,10 +27,10 @@ export const createOffersSectionMarkup = (allOffers, pointType) => {
                         </label>
                       </div>`;
 
-  const offersByCurrentType = getChangedByTypeOffers(allOffers, pointType);
-  const offersMarkup = offersByCurrentType.map(createOfferMarkup).join('');
+  //const offersByCurrentType = getChangedByTypeOffers(allOffers, pointType);
+  const offersMarkup = offers.map(createOfferMarkup).join('');
 
-  if (offersByCurrentType.length !== 0){
+  if (offers.length !== 0){
     return `<section class="event__section  event__section--offers">
                     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
                     ${offersMarkup}</section>`;

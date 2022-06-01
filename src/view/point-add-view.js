@@ -7,10 +7,10 @@ import he from 'he';
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
 
-const createPointAddTemplate = (point, destinations, offers) => {
-  const {basePrice: price, destination, type, isDisabled, isSaving} = point;
+const createPointAddTemplate = (point, destinations, allOffers) => {
+  const {basePrice: price, destination, type, offers, isDisabled, isSaving} = point;
   const pointTypeLabel = type ? type.charAt(0).toUpperCase() + type.slice(1) : '';
-  const pointTypesMarkup = createPointTypesMarkup(offers, type);
+  const pointTypesMarkup = createPointTypesMarkup(allOffers, type);
   const destinationOptions = destinations.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const createPhotosMarkup = (dest) => {
@@ -113,6 +113,7 @@ export default class PointAddView extends SmartView {
   }
 
   get template() {
+    //return createPointAddTemplate(this._data, this.#destinations, this.#allOffers);
     return createPointAddTemplate(this._data, this.#destinations, this.#allOffers);
   }
 
