@@ -1,6 +1,6 @@
 import SmartView from './smart-view';
 import {createPointTypesMarkup} from '../utils/forms';
-import {createOffersSectionMarkup} from '../utils/offers';
+import {changeCheckedOffers, createOffersSectionMarkup, getChangedByTypeOffers} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
@@ -100,20 +100,20 @@ export default class PointAddView extends SmartView {
   #datepickerTo = null;
 
   #destinations = null;
-  #offers = null;
+  #allOffers = null;
 
   constructor(destinations, offers) {
     super();
     this._data = PointAddView.createEmptyPoint(offers);
 
     this.#destinations = destinations;
-    this.#offers = offers;
+    this.#allOffers = offers;
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createPointAddTemplate(this._data, this.#destinations, this.#offers);
+    return createPointAddTemplate(this._data, this.#destinations, this.#allOffers);
   }
 
   removeElement = () => {
@@ -181,6 +181,12 @@ export default class PointAddView extends SmartView {
       .addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceChangeHandler);
+
+    const offerElements = this.element.querySelectorAll('.event__offer-label');
+    for (let i = 0; i < offerElements.length; i++) {
+      //console.log(offerElements[i]);
+      offerElements[i].addEventListener('click', this.#offerClickHandler);
+    }
   }
 
   #dateFromChangeHandler = ([userDate]) => {
@@ -199,7 +205,17 @@ export default class PointAddView extends SmartView {
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      type: evt.target.value
+      type: evt.target.value,
+      offers: getChangedByTypeOffers(this.#allOffers, evt.target.value)
+    }, false);
+  }
+
+  #offerClickHandler = (evt) => {
+    evt.preventDefault();
+    const offers = this._data.offers;
+    console.log(offers);
+    this.updateData({
+      offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
     }, false);
   }
 

@@ -1,6 +1,6 @@
 import SmartView from './smart-view';
 import {createPointTypesMarkup} from '../utils/forms';
-import {createOffersSectionMarkup} from '../utils/offers';
+import {createOffersSectionMarkup, getChangedByTypeOffers} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
@@ -99,21 +99,21 @@ export default class PointEditView extends SmartView {
   #datepickerTo = null;
 
   #destinations = null;
-  #offers = null;
+  #allOffers = null;
 
-  constructor(point, destinations, offers) {
+  constructor(point, destinations, allOffers) {
     super();
     this._data = PointEditView.parsePointToData(point);
 
     this.#destinations = destinations;
-    this.#offers = offers;
+    this.#allOffers = allOffers;
 
     this.#setInnerHandlers();
     this.#setDatepicker();
   }
 
   get template() {
-    return createPointEditTemplate(this._data, this.#destinations, this.#offers);
+    return createPointEditTemplate(this._data, this.#destinations, this.#allOffers);
   }
 
   removeElement = () => {
@@ -205,7 +205,8 @@ export default class PointEditView extends SmartView {
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
-      type: evt.target.value
+      type: evt.target.value,
+      offers: getChangedByTypeOffers(this.#allOffers, evt.target.value)
     }, false);
   }
 

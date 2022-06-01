@@ -18,11 +18,12 @@ export const createOffersSectionMarkup = (allOffers, pointType) => {
   const createOfferMarkup = (offer) => `<div class="event__available-offers">
                       <div class="event__offer-selector">
                         <input class="event__offer-checkbox  visually-hidden" id="event-offer-${pointType}-1"
-                        type="checkbox" name="event-offer-${pointType}" ${offer.isChosen ? 'checked' : ''}>
-                        <label class="event__offer-label" for="event-offer-name-1">
-                          <span class="event__offer-title">${offer.title}</span>
+                        type="checkbox" name="event-offer-${pointType}" ${offer.isChosen ? 'checked' : ''}
+                        value="${offer.title}">
+                        <label class="event__offer-label" for="event-offer-name-1" data-title="${offer.title}">
+                          <span class="event__offer-title" data-title="${offer.title}">${offer.title}</span>
                           &plus;&euro;&nbsp;
-                          <span class="event__offer-price">${offer.price}</span>
+                          <span class="event__offer-price" data-title="${offer.title}">${offer.price}</span>
                         </label>
                       </div>`;
 
@@ -38,3 +39,7 @@ export const createOffersSectionMarkup = (allOffers, pointType) => {
   return '';
 };
 
+export const changeCheckedOffers = (offers, checkedOffer) => {
+  console.log(checkedOffer);
+  return offers;
+};
