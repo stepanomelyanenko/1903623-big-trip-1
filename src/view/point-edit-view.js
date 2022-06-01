@@ -1,5 +1,5 @@
 import SmartView from './smart-view';
-import {createPointTypesMarkup} from '../utils/forms';
+import {createPointTypesMarkup} from '../utils/types';
 import {changeCheckedOffers, createOffersSectionMarkup, getChangedByTypeOffers} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';

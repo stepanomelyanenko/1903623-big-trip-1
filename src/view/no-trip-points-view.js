@@ -7,7 +7,6 @@ const NoPointsTextType = {
   [FilterType.FUTURE]: 'There are no future events now'
 };
 
-
 const createNoPointsTemplate = (filterType) => {
   const noPointTextValue = NoPointsTextType[filterType];
 

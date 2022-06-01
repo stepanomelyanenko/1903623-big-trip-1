@@ -1,11 +1,10 @@
 import SmartView from './smart-view';
-import {createPointTypesMarkup} from '../utils/forms';
+import {createPointTypesMarkup} from '../utils/types';
 import {changeCheckedOffers, createOffersSectionMarkup, getChangedByTypeOffers} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
-
 
 const createPointAddTemplate = (point, destinations, allOffers) => {
   const {basePrice: price, destination, type, offers, isDisabled, isSaving} = point;
@@ -200,7 +199,6 @@ export default class PointAddView extends SmartView {
     });
   }
 
-
   #typeGroupClickHandler = (evt) => {
     evt.preventDefault();
     this.updateData({
@@ -215,7 +213,6 @@ export default class PointAddView extends SmartView {
     this.updateData({
       offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
     }, false);
-    console.log(this._data.offers);
   }
 
   #destinationChangeHandler = (evt) => {
@@ -241,6 +238,22 @@ export default class PointAddView extends SmartView {
     evt.preventDefault();
     this._callback.deleteClick(PointAddView.parseDataToPoint(this._data));
   }
+
+  #getChangedDestination = (destinationName) => {
+    const allDestinations = this.#destinations;
+
+    for (let i = 0; i < allDestinations.length; i++) {
+      if (allDestinations[i].name === destinationName) {
+        return allDestinations[i];
+      }
+    }
+
+    return {
+      'description': null,
+      'name': '',
+      'pictures': []
+    };
+  };
 
   static createEmptyPoint = (allOffers) => {
     let currentOffers = [];
@@ -276,7 +289,6 @@ export default class PointAddView extends SmartView {
   }
 
   static parsePointToData = (point) => ({...point,
-    // В будущем здесь появится обработка Предложений (Offers).
     isDisabled: false,
     isSaving: false,
     isDeleting: false
@@ -284,28 +296,12 @@ export default class PointAddView extends SmartView {
 
   static parseDataToPoint = (data) => {
     const point = {...data};
-    // В будущем здесь появится обработка Предложений (Offers).
+
     delete point.isDisabled;
     delete point.isSaving;
     delete point.isDeleting;
 
     return point;
   }
-
-  #getChangedDestination = (destinationName) => {
-    const allDestinations = this.#destinations;
-
-    for (let i = 0; i < allDestinations.length; i++) {
-      if (allDestinations[i].name === destinationName) {
-        return allDestinations[i];
-      }
-    }
-
-    return {
-      'description': null,
-      'name': '',
-      'pictures': []
-    };
-  };
 }
 
