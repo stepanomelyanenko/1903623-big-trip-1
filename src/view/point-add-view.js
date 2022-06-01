@@ -113,7 +113,6 @@ export default class PointAddView extends SmartView {
   }
 
   get template() {
-    //return createPointAddTemplate(this._data, this.#destinations, this.#allOffers);
     return createPointAddTemplate(this._data, this.#destinations, this.#allOffers);
   }
 

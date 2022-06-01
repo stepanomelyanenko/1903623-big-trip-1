@@ -1,17 +1,17 @@
 import SmartView from './smart-view';
 import {createPointTypesMarkup} from '../utils/forms';
-import {createOffersSectionMarkup, getChangedByTypeOffers} from '../utils/offers';
+import {changeCheckedOffers, createOffersSectionMarkup, getChangedByTypeOffers} from '../utils/offers';
 import flatpickr from 'flatpickr';
 import he from 'he';
 
 import '../../node_modules/flatpickr/dist/flatpickr.min.css';
 
-const createPointEditTemplate = (point, destinations, offers) => {
-  const {basePrice: price, destination, type, isDisabled, isSaving, isDeleting} = point;
+const createPointEditTemplate = (point, destinations, allOffers) => {
+  const {basePrice: price, destination, type, offers, isDisabled, isSaving, isDeleting} = point;
 
   const pointTypeLabel = type.charAt(0).toUpperCase() + type.slice(1);
 
-  const pointTypesMarkup = createPointTypesMarkup(offers, type);
+  const pointTypesMarkup = createPointTypesMarkup(allOffers, type);
   const destinationOptions = destinations.map((x) => (`<option value="${x.name}"></option>`)).join('');
 
   const photosMarkup = destination.pictures.map((x) => (`<img class="event__photo" src="${x.src}" alt="${x.description}">`)).join('');
@@ -188,6 +188,11 @@ export default class PointEditView extends SmartView {
       .addEventListener('change', this.#destinationChangeHandler);
     this.element.querySelector('.event__input--price')
       .addEventListener('change', this.#basePriceChangeHandler);
+
+    const offerElements = this.element.querySelectorAll('.event__offer-label');
+    for (let i = 0; i < offerElements.length; i++) {
+      offerElements[i].addEventListener('click', this.#offerClickHandler);
+    }
   }
 
   #dateFromChangeHandler = ([userDate]) => {
@@ -208,6 +213,15 @@ export default class PointEditView extends SmartView {
       type: evt.target.value,
       offers: getChangedByTypeOffers(this.#allOffers, evt.target.value)
     }, false);
+  }
+
+  #offerClickHandler = (evt) => {
+    evt.preventDefault();
+    const offers = this._data.offers;
+    this.updateData({
+      offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
+    }, false);
+    console.log(this._data.offers);
   }
 
   #destinationChangeHandler = (evt) => {
