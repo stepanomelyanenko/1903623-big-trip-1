@@ -10,14 +10,14 @@ export default class PointNewPresenter {
   #destroyCallback = null;
 
   #destinations = null;
-  #offers = null;
+  #allOffers = null;
 
   constructor(pointListContainer, changeData) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
   }
 
-  init = (callback, destinations, offers) => {
+  init = (callback, destinations, allOffers) => {
     this.#destroyCallback = callback;
 
     if (this.#pointAddComponent !== null) {
@@ -25,9 +25,9 @@ export default class PointNewPresenter {
     }
 
     this.#destinations = destinations;
-    this.#offers = offers;
+    this.#allOffers = allOffers;
 
-    this.#pointAddComponent = new PointAddView(this.#destinations, this.#offers);
+    this.#pointAddComponent = new PointAddView(this.#destinations, this.#allOffers);
     this.#pointAddComponent.setFormSubmitHandler(this.#handleFormSubmit);
     this.#pointAddComponent.setDeleteClickHandler(this.#handleDeleteClick);
 
@@ -73,7 +73,6 @@ export default class PointNewPresenter {
       UpdateType.MINOR,
       point
     );
-    //this.destroy();
   }
 
   #handleDeleteClick = () => {
@@ -87,3 +86,4 @@ export default class PointNewPresenter {
     }
   }
 }
+

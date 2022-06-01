@@ -90,13 +90,9 @@ export default class TripPresenter {
   }
 
   createPoint = (callback) => {
-    //ПРОВЕРИТЬ
     this.#clearTable();
     this.#renderTable();
-    //ПРОВЕРИТЬ
 
-    //this.#currentSortType = SortType.SORT_DAY;
-    //this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.EVERYTHING);
     this.#pointNewPresenter.init(callback, this.#destinations, this.#offers);
   }
 
@@ -204,9 +200,8 @@ export default class TripPresenter {
 
     remove(this.#sortComponent);
     remove(this.#loadingComponent);
-    //ПРОВЕРИТЬ
     remove(this.#pointListComponent);
-    //ПРОВЕРИТЬ
+
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
     }
@@ -221,9 +216,9 @@ export default class TripPresenter {
       this.#renderLoading();
       return;
     }
-    //ПРОВЕРИТЬ
+
     render(this.#tableContainer, this.#pointListComponent, RenderPosition.BEFOREEND);
-    //ПРОВЕРИТЬ
+
     const points = this.points;
     const pointCount = points.length;
 

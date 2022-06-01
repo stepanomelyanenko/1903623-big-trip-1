@@ -27,14 +27,14 @@ export default class PointPresenter {
   #mode = Mode.DEFAULT;
 
   #destinations = null;
-  #offers = null;
+  #allOffers = null;
 
-  constructor(pointListContainer, changeData, changeMode, destinations, offers) {
+  constructor(pointListContainer, changeData, changeMode, destinations, allOffers) {
     this.#pointListContainer = pointListContainer;
     this.#changeData = changeData;
     this.#changeMode = changeMode;
     this.#destinations = destinations;
-    this.#offers = offers;
+    this.#allOffers = allOffers;
   }
 
   init = (point) => {
@@ -44,7 +44,7 @@ export default class PointPresenter {
     const prevPointEditComponent = this.#pointEditComponent;
 
     this.#pointComponent =  new PointView(point);
-    this.#pointEditComponent = new PointEditView(point, this.#destinations, this.#offers);
+    this.#pointEditComponent = new PointEditView(point, this.#destinations, this.#allOffers);
 
     this.#pointComponent.setEditClickHandler(this.#handleEditClick);
     this.#pointComponent.setFavoriteClickHandler(this.#handleFavoriteClick);
@@ -154,7 +154,6 @@ export default class PointPresenter {
   }
 
   #handleFormSubmit = (update) => {
-    //ПРОРАБОТАТЬ ОФФЕРЫ
     const isMinorUpdate =
      !isDatesEqual(this.#point.dateFrom, update.dateFrom) ||
      !isDatesEqual(this.#point.dateTo, update.dateTo) ||
@@ -165,7 +164,6 @@ export default class PointPresenter {
       isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH,
       update,
     );
-    //this.#replaceFormToItem();
   }
 
   #handleDeleteClick = (task) => {

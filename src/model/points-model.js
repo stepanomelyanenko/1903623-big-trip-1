@@ -1,6 +1,5 @@
 import AbstractObservable from '../utils/abstract-observable.js';
 import {UpdateType} from '../utils/const.js';
-import {getCurrentOffers} from '../utils/offers';
 
 export default class PointsModel extends AbstractObservable {
   #apiService = null;
@@ -105,7 +104,8 @@ export default class PointsModel extends AbstractObservable {
     delete adaptedPoint['date_from'];
     delete adaptedPoint['date_to'];
     delete adaptedPoint['is_favorite'];
-    console.log(adaptedPoint);
+
     return adaptedPoint;
   };
 }
+
