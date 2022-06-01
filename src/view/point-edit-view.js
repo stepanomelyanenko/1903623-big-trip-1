@@ -221,7 +221,6 @@ export default class PointEditView extends SmartView {
     this.updateData({
       offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
     }, false);
-    console.log(this._data.offers);
   }
 
   #destinationChangeHandler = (evt) => {

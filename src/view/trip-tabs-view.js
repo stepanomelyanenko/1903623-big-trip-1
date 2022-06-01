@@ -18,16 +18,6 @@ export default class TripTabsView extends AbstractView {
     this.element.addEventListener('click', this.#menuClickHandler);
   }
 
-  setMenuItem = (menuItem) => {
-    const item = this.element.querySelector(`[ data-menu-item=${menuItem}]`);
-
-    if (item !== null) {
-      item.classList.add('trip-tabs__btn--active');
-    } else {
-      item.classList.remove('trip-tabs__btn--active');
-    }
-  }
-
   #menuClickHandler = (evt) => {
     if (evt.target.tagName !== 'A') {
       return;

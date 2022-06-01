@@ -142,6 +142,7 @@ const renderTypeChart = (typeCtx, points) => {
 
 const renderTimeChart = (timeCtx, points) => {
   const timeSpendInMs = countTimeSpendInMs(points, TYPES);
+
   return new Chart(timeCtx, {
     plugins: [ChartDataLabels],
     type: 'horizontalBar',
@@ -280,3 +281,4 @@ export default class StatsView extends SmartView {
 
   }
 }
+
