@@ -184,7 +184,6 @@ export default class PointAddView extends SmartView {
 
     const offerElements = this.element.querySelectorAll('.event__offer-label');
     for (let i = 0; i < offerElements.length; i++) {
-      //console.log(offerElements[i]);
       offerElements[i].addEventListener('click', this.#offerClickHandler);
     }
   }
@@ -213,10 +212,10 @@ export default class PointAddView extends SmartView {
   #offerClickHandler = (evt) => {
     evt.preventDefault();
     const offers = this._data.offers;
-    console.log(offers);
     this.updateData({
       offers: changeCheckedOffers(offers, evt.target.getAttribute('data-title'))
     }, false);
+    console.log(this._data.offers);
   }
 
   #destinationChangeHandler = (evt) => {

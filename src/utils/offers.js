@@ -40,6 +40,13 @@ export const createOffersSectionMarkup = (allOffers, pointType) => {
 };
 
 export const changeCheckedOffers = (offers, checkedOffer) => {
-  console.log(checkedOffer);
-  return offers;
+  const changedOffers = offers.map((offer) => ({
+    'id': offer.id,
+    'title': offer.title,
+    'price': offer.price,
+    'isChosen': offer.title === checkedOffer ? !offer.isChosen : offer.isChosen
+  }));
+
+  //console.log(changedOffers);
+  return changedOffers;
 };

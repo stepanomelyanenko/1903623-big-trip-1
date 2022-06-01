@@ -105,7 +105,7 @@ export default class PointsModel extends AbstractObservable {
     delete adaptedPoint['date_from'];
     delete adaptedPoint['date_to'];
     delete adaptedPoint['is_favorite'];
-    //console.log(adaptedPoint);
+    console.log(adaptedPoint);
     return adaptedPoint;
   };
 }

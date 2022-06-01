@@ -96,7 +96,7 @@ export default class ApiService {
     delete adaptedPoint.dateFrom;
     delete adaptedPoint.dateTo;
     delete adaptedPoint.isFavorite;
-
+    console.log(adaptedPoint);
     return adaptedPoint;
   }
 
