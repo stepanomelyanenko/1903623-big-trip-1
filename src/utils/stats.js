@@ -24,6 +24,7 @@ const countPricesByType = (points, types) => {
       }
     });
   }
+
   return pricesByTypes;
 };
 
@@ -47,35 +48,32 @@ const countTypes = (points, types) => {
       }
     });
   }
+
   return countTypesNumber;
 };
 
 const countTimeSpend = (countTypesInMs) => {
-  let differenceInDays = parseInt((countTypesInMs) / 86400000, 10);
-  let differenceInHours = parseInt((countTypesInMs) / 3600000, 10);
-  let differenceInMinutes = parseInt((countTypesInMs) / 60000, 10) - differenceInHours * 60;
+  const diffDays = parseInt(String((countTypesInMs) / 86400000), 10);
+  let diffHours = parseInt(String((countTypesInMs) / 3600000), 10);
+  const diffMinutes = parseInt(String((countTypesInMs) / 60000), 10) - diffHours * 60;
   let timeSpend = '';
 
-  if (differenceInDays > 0) {
-    differenceInHours = differenceInHours - differenceInDays * 24;
+  if (diffDays > 0) {
+    diffHours = diffHours - diffDays * 24;
   }
 
-  if (differenceInDays === 0 && differenceInHours === 0) {
-    differenceInDays.toString().length === 1 ? differenceInDays = `0${differenceInDays}` : '';
-    differenceInHours.toString().length === 1 ? differenceInHours = `0${differenceInHours}` : '';
-    differenceInMinutes.toString().length === 1 ? differenceInMinutes = `0${differenceInMinutes}` : '';
-    timeSpend = `${differenceInMinutes}M`;
-  } else if (differenceInDays === 0) {
-    differenceInDays.toString().length === 1 ? differenceInDays = `0${differenceInDays}` : '';
-    differenceInHours.toString().length === 1 ? differenceInHours = `0${differenceInHours}` : '';
-    differenceInMinutes.toString().length === 1 ? differenceInMinutes = `0${differenceInMinutes}` : '';
-    timeSpend = `${differenceInHours}H ${differenceInMinutes}M`;
+  const spentDays = `${diffDays.toString().padStart(2,'0')}D`;
+  const spentHours = `${diffHours.toString().padStart(2,'0')}H`;
+  const spentMinutes = `${diffMinutes.toString().padStart(2,'0')}M`;
+
+  if (diffDays === 0 && diffHours === 0) {
+    timeSpend = `${spentDays}`;
+  } else if (diffDays === 0) {
+    timeSpend = `${spentHours} ${spentMinutes}`;
   } else {
-    differenceInDays.toString().length === 1 ? differenceInDays = `0${differenceInDays}` : '';
-    differenceInHours.toString().length === 1 ? differenceInHours = `0${differenceInHours}` : '';
-    differenceInMinutes.toString().length === 1 ? differenceInMinutes = `0${differenceInMinutes}` : '';
-    timeSpend = `${differenceInDays}D ${differenceInHours}H ${differenceInMinutes}M`;
+    timeSpend = `${spentDays} ${spentHours} ${spentMinutes}`;
   }
+
   return timeSpend;
 };
 
