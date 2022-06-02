@@ -68,6 +68,7 @@ tripPresenter.init().finally(() => {
 });
 
 document.querySelector('.trip-main__event-add-btn').addEventListener('click', (evt) => {
+  evt.target.disabled = true;
   evt.preventDefault();
   remove(statisticsComponent);
   filterPresenter.destroy();

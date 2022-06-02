@@ -46,6 +46,7 @@ export default class PointNewPresenter {
     this.#pointAddComponent = null;
 
     document.removeEventListener('keydown', this.#escKeyDownHandler);
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
   setSaving = () => {
@@ -73,6 +74,7 @@ export default class PointNewPresenter {
       UpdateType.MINOR,
       point
     );
+    document.querySelector('.trip-main__event-add-btn').disabled = false;
   }
 
   #handleDeleteClick = () => {
