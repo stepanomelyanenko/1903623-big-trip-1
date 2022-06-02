@@ -32,6 +32,8 @@ const renderMoneyChart = (moneyCtx, points) => {
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
+        minBarLength: 80,
+        barThickness: 44
       }],
     },
     options: {
@@ -64,7 +66,6 @@ const renderMoneyChart = (moneyCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
         }],
         xAxes: [{
           ticks: {
@@ -75,7 +76,6 @@ const renderMoneyChart = (moneyCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 80,
         }],
       },
       legend: {
@@ -116,6 +116,8 @@ const renderTypeChart = (typeCtx, points) => {
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
+        minBarLength: 80,
+        barThickness: 44
       }],
     },
     options: {
@@ -148,7 +150,6 @@ const renderTypeChart = (typeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
         }],
         xAxes: [{
           ticks: {
@@ -159,7 +160,6 @@ const renderTypeChart = (typeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 80,
         }],
       },
       legend: {
@@ -200,6 +200,8 @@ const renderTimeChart = (timeCtx, points) => {
         backgroundColor: '#ffffff',
         hoverBackgroundColor: '#ffffff',
         anchor: 'start',
+        minBarLength: 90,
+        barThickness: 44
       }],
     },
     options: {
@@ -232,7 +234,6 @@ const renderTimeChart = (timeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          barThickness: 44,
         }],
         xAxes: [{
           ticks: {
@@ -243,7 +244,6 @@ const renderTimeChart = (timeCtx, points) => {
             display: false,
             drawBorder: false,
           },
-          minBarLength: 90,
         }],
       },
       legend: {
